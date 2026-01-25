@@ -90,7 +90,7 @@ export default function ZoomableGroup(props: ZoomableGroupPropsUnion) {
     return (
         <ZoomPanProvider value={{ x: position().x, y: position().y, k: position().k, transformString: transformString() }}>
             <g ref={setMapRef}>
-                <rect width={mapContext.width()} height={mapContext.height()} fill="transparent" />
+                <rect width={mapContext.width()} height={mapContext.height()} fill="transparent" style={{ opacity: 0 }} />
                 <g
                     transform={transformString()}
                     class={`rsm-zoomable-group ${local.class} ${local.className}`.trim()}

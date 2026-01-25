@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
 import { resolve } from 'path';
@@ -30,12 +31,13 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'jsdom',
-    transformMode: {
-      web: [/\.[jt]sx?$/],
+    environment: 'happy-dom',
+    server: {
+      deps: {
+        inline: [/solid-js/],
+      },
     },
-    deps: {
-      registerNodeLoader: true,
-    },
+    isolate: false,
+    setupFiles: ['./tests/setup.ts'],
   },
 });

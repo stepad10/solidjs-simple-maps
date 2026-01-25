@@ -26,11 +26,14 @@
     "solid-js": "^1.0.0"
   },
   "devDependencies": {
+    "@solidjs/testing-library": "^0.8.10",
+    "@testing-library/jest-dom": "^6.9.1",
     "@types/d3-geo": "^3.0.0",
     "@types/d3-selection": "^3.0.0",
     "@types/d3-zoom": "^3.0.0",
     "@types/node": "^20.0.0",
     "@types/topojson-client": "^3.0.0",
+    "happy-dom": "^20.3.7",
     "jsdom": "^23.0.0",
     "solid-js": "^1.8.0",
     "typescript": "^5.0.0",
