@@ -14,9 +14,9 @@ An SVG map chart component built for SolidJS, heavily inspired by `react-simple-
 ## Installation
 
 ```bash
-npm install solidjs-simple-maps solid-js
+npm install solidjs-simple-maps solid-js @solidjs/meta
 ```
-*Note: `d3-geo`, `d3-selection`, `d3-zoom` and `@solidjs/meta` are installed automatically as dependencies.*
+*Note: `d3-geo`, `d3-selection`, `d3-zoom` and `topojson-client` are installed automatically as dependencies. `@solidjs/meta` is required if you use `MapWithMetadata`.*
 
 ## Basic Usage
 
@@ -78,7 +78,8 @@ You can use the `MapWithMetadata` wrapper to automatically inject SEO tags into 
 
 ```jsx
 import { For } from "solid-js";
-import { MapWithMetadata, Geographies, Geography, MetaProvider } from "solidjs-simple-maps";
+import { MetaProvider } from "@solidjs/meta";
+import { MapWithMetadata, Geographies, Geography } from "solidjs-simple-maps";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -91,6 +92,7 @@ function App() {
                     description: "A detailed map of the world created with SolidJS.",
                     keywords: ["map", "solidjs", "world"],
                     author: "Me",
+                    canonicalUrl: "https://example.com/map",
                 }}
                 enableOpenGraph={true}
                 enableTwitterCards={true}

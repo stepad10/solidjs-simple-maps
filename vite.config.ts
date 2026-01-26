@@ -9,6 +9,7 @@ export default defineConfig({
         solidPlugin(),
         dts({
             rollupTypes: true,
+            tsconfigPath: "./tsconfig.build.json",
         }),
     ],
     build: {
