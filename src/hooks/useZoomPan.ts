@@ -54,13 +54,7 @@ export default function useZoomPan(props: UseZoomPanHookProps) {
         onZoom: (transform: { x: number; y: number; k: number }) => {
             setPosition({ x: transform.x, y: transform.y, k: transform.k });
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any); // Type cast due to getters in object literal which might not match exact interface if strictly checked, 
-    // but allows tracking. Ideally UseZoomBehaviorProps should accept accessors. 
-    // However, looking at useZoomBehavior, it accesses props properties directly in createEffect.
-    // Which means passing an object with getters WORKS for Solid's proxy wrapping or simple property access inside effect.
-    // BUT useZoomBehavior takes `props: UseZoomBehaviorProps`. 
-    // If useZoomBehavior just uses `props.scaleExtent` inside effect, getters work.
+    });
 
     usePanBehavior({
         get mapRef() {

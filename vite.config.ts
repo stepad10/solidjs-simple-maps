@@ -17,6 +17,7 @@ export default defineConfig({
             name: "SolidSimpleMaps",
             fileName: "index",
         },
+        sourcemap: true,
         rollupOptions: {
             external: ["solid-js", "solid-js/web", "d3-geo", "d3-selection", "d3-zoom", "topojson-client"],
             output: {
@@ -26,6 +27,7 @@ export default defineConfig({
                     "d3-geo": "d3",
                     "d3-selection": "d3",
                     "d3-zoom": "d3",
+                    "topojson-client": "topojson",
                 },
             },
         },
