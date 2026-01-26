@@ -79,6 +79,42 @@ describe('Geographies and Geography', () => {
         });
     });
 
+    it('provides correct event data on click', async () => {
+        // Reset mock for this test
+        fetchSpy.mockResolvedValue({
+            ok: true,
+            json: () => Promise.resolve(mockTopoJSON),
+        });
+
+        const handleClick = vi.fn();
+
+        render(() => (
+            <ComposableMap>
+                <Geographies geography="/world.json">
+                    {({ geographies }) =>
+                        geographies.map((geo) => (
+                            <Geography
+                                geography={geo}
+                                onClick={handleClick}
+                                data-testid="data-geo"
+                            />
+                        ))
+                    }
+                </Geographies>
+            </ComposableMap>
+        ));
+
+        await waitFor(async () => {
+            const path = await screen.findByTestId('data-geo');
+            path.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            expect(handleClick).toHaveBeenCalled();
+            const callArgs = handleClick.mock.calls[0];
+            const eventData = callArgs[1]; // Second argument is data
+
+            expect(eventData).toHaveProperty('geography');
+        });
+    });
 
     it('handles fetch errors', async () => {
         fetchSpy.mockResolvedValue({

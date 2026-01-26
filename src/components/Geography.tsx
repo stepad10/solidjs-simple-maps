@@ -39,14 +39,15 @@ export default function Geography(props: GeographyProps) {
     const [isFocused, setFocus] = createSignal(false);
     const [isHover, setHover] = createSignal(false);
 
-    const geographyEventData = createMemo((): GeographyEventData => {
+    // Optimized: Calculate event data only when needed
+    const getEventData = (): GeographyEventData => {
         return {
             geography: local.geography,
             centroid: getGeographyCentroid(local.geography),
             bounds: getGeographyBounds(local.geography),
             coordinates: getBestGeographyCoordinates(local.geography),
         };
-    });
+    };
 
     const currentState = createMemo(() => {
         return isPressed() || isFocused()
@@ -64,8 +65,6 @@ export default function Geography(props: GeographyProps) {
         return (local.style as any)?.[currentState()] || {};
     });
 
-    // ... handlers ...
-
     return (
         <path
             tabIndex={0}
@@ -75,70 +74,35 @@ export default function Geography(props: GeographyProps) {
             stroke-width={currentStyle().strokeWidth || local['stroke-width']}
             cursor={(local.style as any)?.default ? 'pointer' : 'default'}
             class={`rsm-geography ${local.class} ${local.className}`.trim()}
-            style={local.style ? {} : {}} // Solid style prop - this effectively removes inline styles from the style attribute
+            style={local.style ? {} : {}}
             onClick={(evt) => {
-                if (local.onClick) local.onClick(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                if (local.onClick) local.onClick(evt, getEventData());
             }}
             onMouseEnter={(evt) => {
-                setPressed(false); // Ensure pressed state is reset
-                setHover(true); // Set hover state
-                if (local.onMouseEnter) local.onMouseEnter(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                setPressed(false);
+                setHover(true);
+                if (local.onMouseEnter) local.onMouseEnter(evt, getEventData());
             }}
             onMouseLeave={(evt) => {
-                setPressed(false); // Ensure pressed state is reset
-                setHover(false); // Reset hover state
-                if (local.onMouseLeave) local.onMouseLeave(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                setPressed(false);
+                setHover(false);
+                if (local.onMouseLeave) local.onMouseLeave(evt, getEventData());
             }}
             onFocus={(evt) => {
-                setFocus(true); // Set focus state
-                if (local.onFocus) local.onFocus(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                setFocus(true);
+                if (local.onFocus) local.onFocus(evt, getEventData());
             }}
             onBlur={(evt) => {
-                setFocus(false); // Reset focus state
-                if (local.onBlur) local.onBlur(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                setFocus(false);
+                if (local.onBlur) local.onBlur(evt, getEventData());
             }}
             onMouseDown={(evt) => {
-                setPressed(true); // Set pressed state
-                if (local.onMouseDown) local.onMouseDown(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                setPressed(true);
+                if (local.onMouseDown) local.onMouseDown(evt, getEventData());
             }}
             onMouseUp={(evt) => {
-                setPressed(false); // Reset pressed state
-                if (local.onMouseUp) local.onMouseUp(evt, {
-                    geography: local.geography,
-                    centroid: null, // Simplified event data
-                    bounds: null, // Simplified event data
-                    coordinates: null // Simplified event data
-                });
+                setPressed(false);
+                if (local.onMouseUp) local.onMouseUp(evt, getEventData());
             }}
             {...rest}
         />
