@@ -119,4 +119,22 @@ describe("Geographies and Geography", () => {
             expect(handleError).toHaveBeenCalled();
         });
     });
+
+    it("renders geographies supplied as object data", async () => {
+        render(() => (
+            <ComposableMap>
+                <Geographies geography={mockTopoJSON as any}>
+                    {({ geographies }) => geographies.map((geo) => <Geography geography={geo} data-testid="object-geo-path" />)}
+                </Geographies>
+            </ComposableMap>
+        ));
+
+        // Should render immediately as data is present
+        const paths = screen.getAllByTestId("object-geo-path");
+        expect(paths).toHaveLength(1);
+        expect(paths[0].tagName).toBe("path");
+        // Verify fetch was NOT called
+        expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
 });

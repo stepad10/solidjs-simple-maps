@@ -49,4 +49,77 @@ describe("MapWithMetadata", () => {
             expect(container.querySelector(".rsm-svg")).toBeInTheDocument();
         });
     });
+    it("respects enableSEO prop", async () => {
+        render(() => (
+            <MetaProvider>
+                <MapWithMetadata
+                    enableSEO={false}
+                    metadata={{ title: "Hidden" } as any}
+                >
+                    <ComposableMap />
+                </MapWithMetadata>
+            </MetaProvider>
+        ));
+
+        await waitFor(() => {
+            expect(document.title).not.toBe("Hidden");
+        });
+    });
+
+    it("uses preset values when metadata is missing", async () => {
+        render(() => (
+            <MetaProvider>
+                <MapWithMetadata
+                    preset="worldMap"
+                    metadata={{} as any}
+                >
+                    <ComposableMap />
+                </MapWithMetadata>
+            </MetaProvider>
+        ));
+
+        await waitFor(() => {
+            // Check for default world map title from preset
+            expect(document.title).toContain("World Map");
+        });
+    });
+
+    it("allows partial overrides of preset", async () => {
+        render(() => (
+            <MetaProvider>
+                <MapWithMetadata
+                    preset="worldMap"
+                    metadata={{ title: "Custom Title" } as any}
+                >
+                    <ComposableMap />
+                </MapWithMetadata>
+            </MetaProvider>
+        ));
+
+        await waitFor(() => {
+            expect(document.title).toBe("Custom Title");
+            // Should still have description from preset
+            expect(document.querySelector('meta[name="description"]')).toBeInTheDocument();
+        });
+    });
+
+    it("conditionally renders social tags", async () => {
+        render(() => (
+            <MetaProvider>
+                <MapWithMetadata
+                    enableOpenGraph={false}
+                    enableTwitterCards={false}
+                    metadata={{ title: "Social Map" } as any}
+                >
+                    <ComposableMap />
+                </MapWithMetadata>
+            </MetaProvider>
+        ));
+
+        await waitFor(() => {
+            expect(document.title).toBe("Social Map");
+            expect(document.querySelector('meta[property="og:title"]')).not.toBeInTheDocument();
+            expect(document.querySelector('meta[name="twitter:title"]')).not.toBeInTheDocument();
+        });
+    });
 });

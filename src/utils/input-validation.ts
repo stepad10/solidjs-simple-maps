@@ -29,12 +29,14 @@ export function configureValidation(config: Partial<ValidationConfig>): void {
 
 export function sanitizeString(input: unknown, allowHTML: boolean = false): string {
     if (typeof input !== "string") {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Expected string, got ${typeof input}`);
+        throw createGeographyFetchError(
+            "VALIDATION_ERROR",
+            `Expected string, got ${typeof input}`
+        );
     }
 
     if (input.length > currentValidationConfig.maxStringLength) {
         throw createGeographyFetchError(
-            "VALIDATION_ERROR",
             "VALIDATION_ERROR",
             `String too long: ${input.length} characters (max: ${currentValidationConfig.maxStringLength})`,
         );
@@ -65,17 +67,17 @@ export function validateURL(input: unknown): string {
 
         const dangerousProtocols = ["javascript:", "data:", "vbscript:", "file:"];
         if (dangerousProtocols.some((protocol) => url.protocol.toLowerCase().startsWith(protocol))) {
-            throw createGeographyFetchError("VALIDATION_ERROR", "SECURITY_ERROR", `Dangerous protocol detected: ${url.protocol}`);
+            throw createGeographyFetchError("VALIDATION_ERROR", `Dangerous protocol detected: ${url.protocol}`);
         }
 
         if (url.hostname.includes("..") || url.hostname.includes("%")) {
-            throw createGeographyFetchError("VALIDATION_ERROR", "SECURITY_ERROR", `Invalid hostname: ${url.hostname}`);
+            throw createGeographyFetchError("VALIDATION_ERROR", `Invalid hostname: ${url.hostname}`);
         }
 
         return url.toString();
     } catch (error) {
         if (error instanceof TypeError) {
-            throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Invalid URL format: ${sanitized}`);
+            throw createGeographyFetchError("VALIDATION_ERROR", `Invalid URL format: ${sanitized}`);
         }
         throw error;
     }
@@ -83,15 +85,15 @@ export function validateURL(input: unknown): string {
 
 export function validateNumber(input: unknown, min: number = -Infinity, max: number = Infinity): number {
     if (typeof input !== "number") {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Expected number, got ${typeof input}`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `Expected number, got ${typeof input}`);
     }
 
     if (!Number.isFinite(input)) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", "Number must be finite");
+        throw createGeographyFetchError("VALIDATION_ERROR", "Number must be finite");
     }
 
     if (input < min || input > max) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Number ${input} is outside allowed range [${min}, ${max}]`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `Number ${input} is outside allowed range [${min}, ${max}]`);
     }
 
     return input;
@@ -99,7 +101,7 @@ export function validateNumber(input: unknown, min: number = -Infinity, max: num
 
 export function validateCoordinates(input: unknown): Coordinates {
     if (!Array.isArray(input) || input.length !== 2) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", "Coordinates must be an array of exactly 2 numbers");
+        throw createGeographyFetchError("VALIDATION_ERROR", "Coordinates must be an array of exactly 2 numbers");
     }
 
     const [lon, lat] = input;
@@ -112,12 +114,11 @@ export function validateCoordinates(input: unknown): Coordinates {
 
 export function validateArray<T>(input: unknown, itemValidator?: (item: unknown, index: number) => T): T[] {
     if (!Array.isArray(input)) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Expected array, got ${typeof input}`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `Expected array, got ${typeof input}`);
     }
 
     if (input.length > currentValidationConfig.maxArrayLength) {
         throw createGeographyFetchError(
-            "VALIDATION_ERROR",
             "VALIDATION_ERROR",
             `Array too long: ${input.length} items (max: ${currentValidationConfig.maxArrayLength})`,
         );
@@ -130,7 +131,6 @@ export function validateArray<T>(input: unknown, itemValidator?: (item: unknown,
             } catch (error) {
                 throw createGeographyFetchError(
                     "VALIDATION_ERROR",
-                    "VALIDATION_ERROR",
                     `Invalid array item at index ${index}: ${error instanceof Error ? error.message : "Unknown error"}`,
                 );
             }
@@ -142,12 +142,11 @@ export function validateArray<T>(input: unknown, itemValidator?: (item: unknown,
 
 export function validateObject(input: unknown, depth: number = 0): Record<string, unknown> {
     if (typeof input !== "object" || input === null || Array.isArray(input)) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Expected object, got ${typeof input}`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `Expected object, got ${typeof input}`);
     }
 
     if (depth > currentValidationConfig.maxObjectDepth) {
         throw createGeographyFetchError(
-            "VALIDATION_ERROR",
             "VALIDATION_ERROR",
             `Object nesting too deep: ${depth} levels (max: ${currentValidationConfig.maxObjectDepth})`,
         );
@@ -209,7 +208,6 @@ export function sanitizeSVG(svgContent: string): string {
             .replace(/<iframe[^>]*>.*?<\/iframe>/gis, "")
             .replace(/<object[^>]*>.*?<\/object>/gis, "")
             .replace(/<embed[^>]*>/gis, "")
-            .replace(/on\w+\s*=/gi, "")
             .replace(/javascript:/gi, "")
             .replace(/data:(?!image\/)/gi, "")
             .replace(/vbscript:/gi, "");
@@ -220,6 +218,10 @@ export function sanitizeSVG(svgContent: string): string {
             const regex = new RegExp(`\\s${attr}\\s*=\\s*["'][^"']*["']`, "gi");
             sanitized = sanitized.replace(regex, "");
         });
+
+        // Final cleanup of any remaining broken event handlers or unquoted attributes
+        sanitized = sanitized.replace(/on\w+\s*=\s*["'][^"']*["']/gi, "");
+        sanitized = sanitized.replace(/on\w+\s*=[^>\s]+/gi, "");
 
         return sanitized;
     }
@@ -247,7 +249,7 @@ export function validateSecurityConfig(input: unknown): Partial<GeographySecurit
         config.ALLOWED_PROTOCOLS = validateArray(obj.ALLOWED_PROTOCOLS, (item) => {
             const protocol = sanitizeString(item);
             if (!["https:", "http:"].includes(protocol)) {
-                throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Invalid protocol: ${protocol}`);
+                throw createGeographyFetchError("VALIDATION_ERROR", `Invalid protocol: ${protocol}`);
             }
             return protocol;
         });
@@ -255,14 +257,14 @@ export function validateSecurityConfig(input: unknown): Partial<GeographySecurit
 
     if ("ALLOW_HTTP_LOCALHOST" in obj && obj.ALLOW_HTTP_LOCALHOST !== undefined) {
         if (typeof obj.ALLOW_HTTP_LOCALHOST !== "boolean") {
-            throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", "ALLOW_HTTP_LOCALHOST must be a boolean");
+            throw createGeographyFetchError("VALIDATION_ERROR", "ALLOW_HTTP_LOCALHOST must be a boolean");
         }
         config.ALLOW_HTTP_LOCALHOST = obj.ALLOW_HTTP_LOCALHOST;
     }
 
     if ("STRICT_HTTPS_ONLY" in obj && obj.STRICT_HTTPS_ONLY !== undefined) {
         if (typeof obj.STRICT_HTTPS_ONLY !== "boolean") {
-            throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", "STRICT_HTTPS_ONLY must be a boolean");
+            throw createGeographyFetchError("VALIDATION_ERROR", "STRICT_HTTPS_ONLY must be a boolean");
         }
         config.STRICT_HTTPS_ONLY = obj.STRICT_HTTPS_ONLY;
     }
@@ -274,21 +276,21 @@ export function validateSRIConfig(input: unknown): SRIConfig {
     const obj = validateObject(input);
 
     if (!("algorithm" in obj) || !("hash" in obj) || !("enforceIntegrity" in obj)) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", "SRI config must have algorithm, hash, and enforceIntegrity properties");
+        throw createGeographyFetchError("VALIDATION_ERROR", "SRI config must have algorithm, hash, and enforceIntegrity properties");
     }
 
     const algorithm = sanitizeString(obj.algorithm);
     if (!["sha256", "sha384", "sha512"].includes(algorithm)) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Invalid SRI algorithm: ${algorithm}`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `Invalid SRI algorithm: ${algorithm}`);
     }
 
     const hash = sanitizeString(obj.hash);
     if (!hash.startsWith(`${algorithm}-`)) {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `SRI hash must start with ${algorithm}-`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `SRI hash must start with ${algorithm}-`);
     }
 
     if (typeof obj.enforceIntegrity !== "boolean") {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", "enforceIntegrity must be a boolean");
+        throw createGeographyFetchError("VALIDATION_ERROR", "enforceIntegrity must be a boolean");
     }
 
     return {
@@ -375,7 +377,7 @@ export function validateEventHandler(input: unknown): ((...args: unknown[]) => u
     }
 
     if (typeof input !== "function") {
-        throw createGeographyFetchError("VALIDATION_ERROR", "VALIDATION_ERROR", `Event handler must be a function, got ${typeof input}`);
+        throw createGeographyFetchError("VALIDATION_ERROR", `Event handler must be a function, got ${typeof input}`);
     }
 
     const funcString = input.toString();
@@ -383,7 +385,7 @@ export function validateEventHandler(input: unknown): ((...args: unknown[]) => u
 
     for (const pattern of dangerousPatterns) {
         if (funcString.includes(pattern)) {
-            throw createGeographyFetchError("VALIDATION_ERROR", "SECURITY_ERROR", `Event handler contains potentially dangerous code: ${pattern}`);
+            throw createGeographyFetchError("SECURITY_ERROR", `Event handler contains potentially dangerous code: ${pattern}`);
         }
     }
 

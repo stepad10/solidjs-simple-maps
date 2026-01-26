@@ -39,7 +39,7 @@ export default defineConfig({
                 inline: [/solid-js/],
             },
         },
-        isolate: false,
+        isolate: true,
         setupFiles: ["./tests/setup.ts"],
     },
 });
