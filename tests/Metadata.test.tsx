@@ -39,6 +39,8 @@ describe('MapWithMetadata', () => {
                         title: 'Map Wrapper',
                         description: 'Wrapper description',
                         keywords: ['wrapper'],
+                        author: 'Solid Simple Maps',
+                        canonicalUrl: 'https://example.com',
                     }}
                 >
                     <ComposableMap />
