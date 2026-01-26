@@ -30,6 +30,8 @@ export default function useGeographies(props: UseGeographiesProps) {
 
     const loadedGeographies = createMemo(() => {
         if (isString(props.geography)) {
+            // Prevent throwing if there is an error
+            if (geographyData.error) return null;
             return geographyData();
         }
         return props.geography;

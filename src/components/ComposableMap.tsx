@@ -24,7 +24,6 @@ export default function ComposableMap(props: ComposableMapProps) {
         'class',
         'debug',
         'children',
-        'options', // Some version might have options, keeping safe
     ]);
 
     return (

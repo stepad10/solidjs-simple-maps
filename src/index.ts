@@ -1,3 +1,6 @@
+export { default as MapMetadata } from './components/MapMetadata';
+export { default as MapWithMetadata } from './components/MapWithMetadata';
+export * from './components/MapWithMetadata'; // Export props/types
 export { default as ComposableMap } from './components/ComposableMap';
 export { default as Geographies } from './components/Geographies';
 export { default as Geography } from './components/Geography';

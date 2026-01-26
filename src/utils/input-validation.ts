@@ -431,7 +431,6 @@ export function validateSRIConfig(input: unknown): SRIConfig {
     return {
         algorithm: algorithm as 'sha256' | 'sha384' | 'sha512',
         hash,
-        enforceIntegrity: obj.enforceIntegrity,
     };
 }
 

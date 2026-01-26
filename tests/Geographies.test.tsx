@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, waitFor, screen } from '@solidjs/testing-library';
+import { ErrorBoundary } from 'solid-js';
 import { ComposableMap, Geographies, Geography } from '../src';
 import { mockTopoJSON } from './mocks/topojson';
 
@@ -75,6 +76,31 @@ describe('Geographies and Geography', () => {
             // Trigger click (requires fireEvent or userEvent, but simple click should work in DOM)
             path.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             expect(handleClick).toHaveBeenCalled();
+        });
+    });
+
+
+    it('handles fetch errors', async () => {
+        fetchSpy.mockResolvedValue({
+            ok: false,
+            status: 404,
+            statusText: 'Not Found',
+        });
+
+        const handleError = vi.fn();
+
+        render(() => (
+            <ErrorBoundary fallback={(err) => <div>Caught: {err.message}</div>}>
+                <ComposableMap>
+                    <Geographies geography="/invalid.json" onGeographyError={handleError}>
+                        {({ geographies }) => geographies.map(geo => <Geography geography={geo} />)}
+                    </Geographies>
+                </ComposableMap>
+            </ErrorBoundary>
+        ));
+
+        await waitFor(() => {
+            expect(handleError).toHaveBeenCalled();
         });
     });
 });

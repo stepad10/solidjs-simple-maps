@@ -405,3 +405,19 @@ export interface GeographyServerProps {
     children: (data: GeographyData) => JSX.Element;
     cache?: boolean;
 }
+
+export interface SRIConfig {
+    algorithm: 'sha256' | 'sha384' | 'sha512';
+    hash: string;
+}
+
+export interface GeographySecurityConfig {
+    sri?: SRIConfig;
+    TIMEOUT_MS?: number;
+    MAX_RESPONSE_SIZE?: number;
+    ALLOWED_CONTENT_TYPES?: string[];
+    ALLOWED_PROTOCOLS?: string[];
+    ALLOW_HTTP_LOCALHOST?: boolean;
+    STRICT_HTTPS_ONLY?: boolean;
+    enforceIntegrity?: boolean;
+}

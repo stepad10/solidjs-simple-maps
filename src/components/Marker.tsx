@@ -7,88 +7,70 @@ export default function Marker(props: MarkerProps) {
     const [local, rest] = splitProps(merged, [
         'coordinates',
         'children',
-        'onMouseEnter',
-        'onMouseLeave',
-        'onMouseDown',
-        'onMouseUp',
-        'onFocus',
-        'onBlur',
         'style',
         'className',
-        'class'
+        'class',
+        'onClick',
+        'onMouseEnter',
+        'onMouseLeave',
+        'onFocus',
+        'onBlur',
+        'onMouseDown',
+        'onMouseUp',
     ]);
 
     const { projection } = useMapContext();
     const [isPressed, setPressed] = createSignal(false);
+    const [isHover, setHover] = createSignal(false);
     const [isFocused, setFocus] = createSignal(false);
-
-    const handleMouseEnter = (evt: MouseEvent) => {
-        setFocus(true);
-        if (local.onMouseEnter) local.onMouseEnter(evt);
-    };
-
-    const handleMouseLeave = (evt: MouseEvent) => {
-        setFocus(false);
-        if (isPressed()) setPressed(false);
-        if (local.onMouseLeave) local.onMouseLeave(evt);
-    };
-
-    const handleFocus = (evt: FocusEvent) => {
-        setFocus(true);
-        if (local.onFocus) local.onFocus(evt);
-    };
-
-    const handleBlur = (evt: FocusEvent) => {
-        setFocus(false);
-        if (isPressed()) setPressed(false);
-        if (local.onBlur) local.onBlur(evt);
-    };
-
-    const handleMouseDown = (evt: MouseEvent) => {
-        setPressed(true);
-        if (local.onMouseDown) local.onMouseDown(evt);
-    };
-
-    const handleMouseUp = (evt: MouseEvent) => {
-        setPressed(false);
-        if (local.onMouseUp) local.onMouseUp(evt);
-    };
 
     const projectedCoords = createMemo(() => {
         return projection()(local.coordinates);
     });
 
     const currentState = createMemo(() => {
-        return isPressed() || isFocused()
+        return isPressed() || isHover() || isFocused()
             ? isPressed()
                 ? 'pressed'
                 : 'hover'
             : 'default';
     });
 
-    const currentStyle = createMemo(() => {
-        return local.style?.[currentState()];
-    });
-
-    const transform = createMemo(() => {
-        const coords = projectedCoords();
-        if (!coords) return undefined;
-        const [x, y] = coords;
-        return `translate(${x}, ${y})`;
-    });
-
     return (
         <Show when={projectedCoords()}>
             <g
-                transform={transform()}
+                transform={`translate(${projectedCoords()![0]}, ${projectedCoords()![1]})`}
                 class={`rsm-marker ${local.class} ${local.className}`.trim()}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                style={currentStyle()}
+                style={local.style ? {} : {}}
+                onClick={(evt) => {
+                    if (local.onClick) (local.onClick as any)(evt);
+                }}
+                onMouseEnter={(evt) => {
+                    setHover(true);
+                    if (local.onMouseEnter) (local.onMouseEnter as any)(evt);
+                }}
+                onMouseLeave={(evt) => {
+                    setHover(false);
+                    setPressed(false);
+                    if (local.onMouseLeave) (local.onMouseLeave as any)(evt);
+                }}
+                onFocus={(evt) => {
+                    setFocus(true);
+                    if (local.onFocus) (local.onFocus as any)(evt);
+                }}
+                onBlur={(evt) => {
+                    setFocus(false);
+                    setPressed(false);
+                    if (local.onBlur) (local.onBlur as any)(evt);
+                }}
+                onMouseDown={(evt) => {
+                    setPressed(true);
+                    if (local.onMouseDown) (local.onMouseDown as any)(evt);
+                }}
+                onMouseUp={(evt) => {
+                    setPressed(false);
+                    if (local.onMouseUp) (local.onMouseUp as any)(evt);
+                }}
                 {...rest}
             >
                 {local.children}
