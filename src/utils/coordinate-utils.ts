@@ -1,5 +1,5 @@
-import { ZoomTransform } from 'd3-zoom';
-import { Coordinates, createCoordinates } from '../types';
+import { ZoomTransform } from "d3-zoom";
+import { Coordinates, createCoordinates } from "../types";
 
 export function getCoords(w: number, h: number, t: ZoomTransform): Coordinates {
     const xOffset = (w * t.k - w) / 2;
@@ -9,13 +9,7 @@ export function getCoords(w: number, h: number, t: ZoomTransform): Coordinates {
     return createCoordinates(lon, lat);
 }
 
-export function screenToMapCoordinates(
-    screenX: number,
-    screenY: number,
-    width: number,
-    height: number,
-    transform: ZoomTransform,
-): Coordinates {
+export function screenToMapCoordinates(screenX: number, screenY: number, width: number, height: number, transform: ZoomTransform): Coordinates {
     const mapX = (screenX - transform.x) / transform.k;
     const mapY = (screenY - transform.y) / transform.k;
 
@@ -25,12 +19,7 @@ export function screenToMapCoordinates(
     return createCoordinates(lon, lat);
 }
 
-export function mapToScreenCoordinates(
-    coordinates: Coordinates,
-    width: number,
-    height: number,
-    transform: ZoomTransform,
-): [number, number] {
+export function mapToScreenCoordinates(coordinates: Coordinates, width: number, height: number, transform: ZoomTransform): [number, number] {
     const [lon, lat] = coordinates;
 
     const mapX = ((lon + 180) / 360) * width;
@@ -42,10 +31,7 @@ export function mapToScreenCoordinates(
     return [screenX, screenY];
 }
 
-export function calculateDistance(
-    coord1: Coordinates,
-    coord2: Coordinates,
-): number {
+export function calculateDistance(coord1: Coordinates, coord2: Coordinates): number {
     const [lon1, lat1] = coord1;
     const [lon2, lat2] = coord2;
 
@@ -53,12 +39,7 @@ export function calculateDistance(
     const dLat = toRadians(lat2 - lat1);
     const dLon = toRadians(lon2 - lon1);
 
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
@@ -82,9 +63,6 @@ export function normalizeLatitude(latitude: number): number {
     return Math.max(-90, Math.min(90, latitude));
 }
 
-export function createNormalizedCoordinates(
-    lon: number,
-    lat: number,
-): Coordinates {
+export function createNormalizedCoordinates(lon: number, lat: number): Coordinates {
     return createCoordinates(normalizeLongitude(lon), normalizeLatitude(lat));
 }

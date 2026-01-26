@@ -1,8 +1,8 @@
-import { createEffect } from 'solid-js';
-import { zoomIdentity as d3ZoomIdentity, ZoomBehavior } from 'd3-zoom';
-import { select as d3Select } from 'd3-selection';
-import { GeoProjection } from 'd3-geo';
-import { ZoomPanState, Coordinates } from '../types';
+import { createEffect } from "solid-js";
+import { zoomIdentity as d3ZoomIdentity, ZoomBehavior } from "d3-zoom";
+import { select as d3Select } from "d3-selection";
+import { GeoProjection } from "d3-geo";
+import { ZoomPanState, Coordinates } from "../types";
 
 interface UsePanBehaviorProps {
     mapRef: SVGGElement | undefined;
@@ -35,12 +35,7 @@ export function usePanBehavior(props: UsePanBehaviorProps) {
         props.bypassEvents.current = true;
 
         // Direct update (Solid transitions are built-in, we can just call d3)
-        svg.call(
-            zoomBehavior.transform,
-            d3ZoomIdentity
-                .translate(props.width() / 2 - x, props.height() / 2 - y)
-                .scale(newZoom),
-        );
+        svg.call(zoomBehavior.transform, d3ZoomIdentity.translate(props.width() / 2 - x, props.height() / 2 - y).scale(newZoom));
 
         const newPosition = { x: props.width() / 2 - x, y: props.height() / 2 - y, k: newZoom };
         if (props.onPositionChange) {
@@ -52,12 +47,7 @@ export function usePanBehavior(props: UsePanBehaviorProps) {
 
     createEffect(() => {
         const [lon, lat] = props.center;
-        if (
-            lon === lastPosition.x &&
-            lat === lastPosition.y &&
-            props.zoom === lastPosition.k
-        )
-            return;
+        if (lon === lastPosition.x && lat === lastPosition.y && props.zoom === lastPosition.k) return;
 
         // Delay slightly to ensure d3 behavior is attached? usually createEffect runs after render
         programmaticMove(props.center, props.zoom);

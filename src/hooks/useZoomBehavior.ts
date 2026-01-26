@@ -1,9 +1,9 @@
-import { createEffect, onCleanup } from 'solid-js';
-import { zoom as d3Zoom, ZoomBehavior, D3ZoomEvent } from 'd3-zoom';
-import { select as d3Select } from 'd3-selection';
-import { GeoProjection } from 'd3-geo';
-import { ScaleExtent, TranslateExtent, Coordinates, Position, createCoordinates } from '../types';
-import { getCoords } from '../utils';
+import { createEffect, onCleanup } from "solid-js";
+import { zoom as d3Zoom, ZoomBehavior, D3ZoomEvent } from "d3-zoom";
+import { select as d3Select } from "d3-selection";
+import { GeoProjection } from "d3-geo";
+import { ScaleExtent, TranslateExtent, Position, createCoordinates } from "../types";
+import { getCoords } from "../utils";
 
 interface UseZoomBehaviorProps {
     mapRef: SVGGElement | undefined;
@@ -13,10 +13,7 @@ interface UseZoomBehaviorProps {
     scaleExtent: ScaleExtent;
     translateExtent: TranslateExtent;
     filterZoomEvent?: (event: Event) => boolean;
-    onZoom?: (
-        transform: { x: number; y: number; k: number },
-        sourceEvent?: Event,
-    ) => void;
+    onZoom?: (transform: { x: number; y: number; k: number }, sourceEvent?: Event) => void;
     onZoomStart?: ((position: Position, event: Event) => void) | undefined;
     onZoomEnd?: ((position: Position, event: Event) => void) | undefined;
     onMove?: ((position: Position, event: Event) => void) | undefined;
@@ -91,35 +88,33 @@ export function useZoomBehavior(props: UseZoomBehaviorProps) {
             if (inverted) {
                 const [x, y] = inverted;
                 if (!props.onZoomEnd) return;
-                props.onZoomEnd(
-                    { coordinates: createCoordinates(x, y), zoom: d3Event.transform.k },
-                    d3Event.sourceEvent || d3Event,
-                );
+                props.onZoomEnd({ coordinates: createCoordinates(x, y), zoom: d3Event.transform.k }, d3Event.sourceEvent || d3Event);
             }
         }
 
-        function filterFunc(event: any) {
+        function filterFunc(event: Event | MouseEvent) {
             if (props.filterZoomEvent) {
                 return props.filterZoomEvent(event);
             }
-            return !event.ctrlKey && !event.button;
+            const mouseEvent = event as MouseEvent;
+            return !mouseEvent.ctrlKey && !mouseEvent.button;
         }
 
         zoomBehavior = d3Zoom<SVGGElement, unknown>()
-            .filter(filterFunc as any) // D3 Types are tricky here
+            .filter(filterFunc) // D3 expects specific signature, verify adherence
             .scaleExtent([minZoom, maxZoom])
             .translateExtent([
                 [a1, a2],
                 [b1, b2],
             ])
-            .on('start', handleZoomStart)
-            .on('zoom', handleZoom)
-            .on('end', handleZoomEnd);
+            .on("start", handleZoomStart)
+            .on("zoom", handleZoom)
+            .on("end", handleZoomEnd);
 
         svg.call(zoomBehavior);
 
         onCleanup(() => {
-            svg.on('.zoom', null);
+            svg.on(".zoom", null);
         });
     });
 

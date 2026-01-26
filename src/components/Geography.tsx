@@ -1,37 +1,33 @@
-import { createSignal, createMemo, splitProps, mergeProps } from 'solid-js';
-import { GeographyProps, PreparedFeature, GeographyEventData } from '../types';
-import { useMapContext } from './MapProvider';
-import {
-    getGeographyCentroid,
-    getGeographyBounds,
-    getBestGeographyCoordinates,
-} from '../utils/geography-utils';
+import { createSignal, createMemo, splitProps, mergeProps } from "solid-js";
+import { GeographyProps, PreparedFeature, GeographyEventData } from "../types";
+import { useMapContext } from "./MapProvider";
+import { getGeographyCentroid, getGeographyBounds, getBestGeographyCoordinates } from "../utils/geography-utils";
 
 export default function Geography(props: GeographyProps) {
     const merged = mergeProps(
         {
             style: {},
-            className: '',
-            class: '',
+            className: "",
+            class: "",
         },
         props,
     );
 
     const [local, rest] = splitProps(merged, [
-        'geography',
-        'onClick',
-        'onMouseEnter',
-        'onMouseLeave',
-        'onMouseDown',
-        'onMouseUp',
-        'onFocus',
-        'onBlur',
-        'style',
-        'className',
-        'class',
-        'fill',
-        'stroke',
-        'stroke-width',
+        "geography",
+        "onClick",
+        "onMouseEnter",
+        "onMouseLeave",
+        "onMouseDown",
+        "onMouseUp",
+        "onFocus",
+        "onBlur",
+        "style",
+        "className",
+        "class",
+        "fill",
+        "stroke",
+        "stroke-width",
     ]);
 
     const { path } = useMapContext();
@@ -50,11 +46,7 @@ export default function Geography(props: GeographyProps) {
     };
 
     const currentState = createMemo(() => {
-        return isPressed() || isFocused()
-            ? isPressed()
-                ? 'pressed'
-                : 'hover'
-            : 'default';
+        return isPressed() ? "pressed" : isHover() || isFocused() ? "hover" : "default";
     });
 
     const svgPath = createMemo(() => {
@@ -62,17 +54,18 @@ export default function Geography(props: GeographyProps) {
     });
 
     const currentStyle = createMemo(() => {
-        return (local.style as any)?.[currentState()] || {};
+        const style = local.style as Record<string, unknown>;
+        return (style?.[currentState()] as Record<string, string | number>) || {};
     });
 
     return (
         <path
             tabIndex={0}
-            d={svgPath() as string || ''}
-            fill={currentStyle().fill || local.fill}
-            stroke={currentStyle().stroke || local.stroke}
-            stroke-width={currentStyle().strokeWidth || local['stroke-width']}
-            cursor={(local.style as any)?.default ? 'pointer' : 'default'}
+            d={(svgPath() as string) || ""}
+            fill={(currentStyle().fill as string) || local.fill}
+            stroke={(currentStyle().stroke as string) || local.stroke}
+            stroke-width={currentStyle().strokeWidth || local["stroke-width"]}
+            cursor={(local.style as Record<string, unknown>)?.default ? "pointer" : "default"}
             class={`rsm-geography ${local.class} ${local.className}`.trim()}
             style={local.style ? {} : {}}
             onClick={(evt) => {

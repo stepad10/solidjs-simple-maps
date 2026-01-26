@@ -1,13 +1,8 @@
-import { GeographyError } from '../types';
+import { GeographyError } from "../types";
 
-export function createGeographyFetchError(
-    type: GeographyError['type'],
-    message: string,
-    url?: string,
-    originalError?: Error,
-): GeographyError {
+export function createGeographyFetchError(type: GeographyError["type"], message: string, url?: string, originalError?: Error): GeographyError {
     const error = new Error(message) as GeographyError;
-    error.name = 'GeographyError';
+    error.name = "GeographyError";
     error.type = type;
     error.timestamp = new Date().toISOString();
 
@@ -29,12 +24,8 @@ export function createGeographyFetchError(
     return error;
 }
 
-export function createValidationError(
-    message: string,
-    field: string,
-    value: unknown,
-): GeographyError {
-    const error = createGeographyFetchError('VALIDATION_ERROR', message);
+export function createValidationError(message: string, field: string, value: unknown): GeographyError {
+    const error = createGeographyFetchError("VALIDATION_ERROR", message);
 
     (error as GeographyError & { field?: string; value?: unknown }).field = field;
     (error as GeographyError & { field?: string; value?: unknown }).value = value;
@@ -42,11 +33,8 @@ export function createValidationError(
     return error;
 }
 
-export function createSecurityError(
-    message: string,
-    operation: string,
-): GeographyError {
-    const error = createGeographyFetchError('SECURITY_ERROR', message);
+export function createSecurityError(message: string, operation: string): GeographyError {
+    const error = createGeographyFetchError("SECURITY_ERROR", message);
 
     (error as GeographyError & { operation?: string }).operation = operation;
 
@@ -54,12 +42,7 @@ export function createSecurityError(
 }
 
 // Originally in src/utils.ts
-export function createGeographyError(
-    type: GeographyError['type'],
-    message: string,
-    geography?: string,
-    details?: Record<string, unknown>,
-): GeographyError {
+export function createGeographyError(type: GeographyError["type"], message: string, geography?: string, details?: Record<string, unknown>): GeographyError {
     const error = new Error(message) as GeographyError;
     error.type = type;
     if (geography) error.geography = geography;

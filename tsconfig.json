@@ -8,15 +8,9 @@
         "esModuleInterop": true,
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
-        "types": [
-            "vite/client",
-            "vitest/globals"
-        ],
+        "types": ["vite/client", "vitest/globals"],
         "noEmit": true,
         "skipLibCheck": true
     },
-    "include": [
-        "src",
-        "tests"
-    ]
+    "include": ["src", "tests", "dev"]
 }

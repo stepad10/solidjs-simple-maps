@@ -1,15 +1,7 @@
-import { createResource, createMemo } from 'solid-js';
-import { FeatureCollection } from 'geojson';
-import { Topology } from 'topojson-specification';
-import { useMapContext } from '../components/MapProvider';
-import { UseGeographiesProps, GeographyData } from '../types';
-import {
-    getFeatures,
-    getMesh,
-    prepareFeatures,
-    prepareMesh,
-    isString,
-} from '../utils';
+import { createResource, createMemo } from "solid-js";
+import { useMapContext } from "../components/MapProvider";
+import { UseGeographiesProps } from "../types";
+import { getFeatures, getMesh, prepareFeatures, prepareMesh, isString } from "../utils";
 
 // Simple fetcher function
 const fetchGeographyData = async (url: string) => {
@@ -23,10 +15,7 @@ const fetchGeographyData = async (url: string) => {
 export default function useGeographies(props: UseGeographiesProps) {
     const mapContext = useMapContext();
 
-    const [geographyData] = createResource(
-        () => (isString(props.geography) ? props.geography : null),
-        fetchGeographyData
-    );
+    const [geographyData] = createResource(() => (isString(props.geography) ? props.geography : null), fetchGeographyData);
 
     const loadedGeographies = createMemo(() => {
         if (isString(props.geography)) {

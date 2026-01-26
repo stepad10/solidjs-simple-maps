@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeAll } from 'vitest';
-import { render } from '@solidjs/testing-library';
-import { ComposableMap, ZoomableGroup } from '../src';
+import { describe, it, expect, vi, beforeAll } from "vitest";
+import { render } from "@solidjs/testing-library";
+import { ComposableMap, ZoomableGroup } from "../src";
 
 // Mock SVG methods not implemented in JSDOM
 beforeAll(() => {
-    Object.defineProperty(window.SVGSVGElement.prototype, 'createSVGPoint', {
+    Object.defineProperty(window.SVGSVGElement.prototype, "createSVGPoint", {
         writable: true,
         value: vi.fn().mockImplementation(() => ({
             x: 0,
@@ -13,7 +13,7 @@ beforeAll(() => {
         })),
     });
 
-    Object.defineProperty(window.SVGElement.prototype, 'getScreenCTM', {
+    Object.defineProperty(window.SVGElement.prototype, "getScreenCTM", {
         writable: true,
         value: vi.fn().mockImplementation(() => ({
             a: 1,
@@ -34,8 +34,8 @@ beforeAll(() => {
     });
 });
 
-describe('ZoomableGroup', () => {
-    it('renders with default transform', () => {
+describe("ZoomableGroup", () => {
+    it("renders with default transform", () => {
         const { container } = render(() => (
             <ComposableMap>
                 <ZoomableGroup>
@@ -44,28 +44,28 @@ describe('ZoomableGroup', () => {
             </ComposableMap>
         ));
 
-        const group = container.querySelector('.rsm-zoomable-group');
+        const group = container.querySelector(".rsm-zoomable-group");
         expect(group).toBeInTheDocument();
 
         // Check for the transparent event capture rect
-        const eventRect = container.querySelector('rect');
+        const eventRect = container.querySelector("rect");
         expect(eventRect).toBeInTheDocument();
-        expect(eventRect).toHaveStyle({ opacity: '0' });
+        expect(eventRect).toHaveStyle({ opacity: "0" });
     });
 
-    it('renders children', () => {
+    it("renders children", () => {
         const { container } = render(() => (
             <ComposableMap>
                 <ZoomableGroup>
-                    <circle className="test-child" cx="10" cy="10" r="5" />
+                    <circle class="test-child" cx="10" cy="10" r="5" />
                 </ZoomableGroup>
             </ComposableMap>
         ));
 
-        expect(container.querySelector('.test-child')).toBeInTheDocument();
+        expect(container.querySelector(".test-child")).toBeInTheDocument();
     });
 
-    it('handles zoom interactions', async () => {
+    it("handles zoom interactions", async () => {
         const { container } = render(() => (
             <ComposableMap>
                 <ZoomableGroup minZoom={1} maxZoom={5} zoom={1}>
@@ -74,11 +74,11 @@ describe('ZoomableGroup', () => {
             </ComposableMap>
         ));
 
-        const rect = container.querySelector('rect');
+        const rect = container.querySelector("rect");
         expect(rect).toBeInTheDocument();
 
         // Simulate wheel event for zoom in
-        rect?.dispatchEvent(new WheelEvent('wheel', { deltaY: -100, bubbles: true }));
+        rect?.dispatchEvent(new WheelEvent("wheel", { deltaY: -100, bubbles: true }));
 
         // Since we can't easily check the internal d3 state or exact transform without wait/computations,
         // we can observe if the group transform changes from default.
@@ -86,9 +86,8 @@ describe('ZoomableGroup', () => {
         // After zoom, it should change.
 
         // Note: D3 zoom behavior often uses requestAnimationFrame or similar, so we wait.
-        const group = container.querySelector('.rsm-zoomable-group');
         // Initial transform might be empty or specific string.
-        // Checks blindly if dispatch doesn't crash really, 
+        // Checks blindly if dispatch doesn't crash really,
         // to fully test D3 integration we rely on basic transform presence check previously done.
         // But let's see if we can catch a change.
     });

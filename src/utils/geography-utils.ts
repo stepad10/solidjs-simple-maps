@@ -1,32 +1,22 @@
-import { geoCentroid, geoBounds } from 'd3-geo';
-import { Feature, Geometry } from 'geojson';
-import { Coordinates, createCoordinates } from '../types';
+import { geoCentroid, geoBounds } from "d3-geo";
+import { Feature, Geometry } from "geojson";
+import { Coordinates, createCoordinates } from "../types";
 
-export function getGeographyCentroid(
-    geography: Feature<Geometry>,
-): Coordinates | null {
+export function getGeographyCentroid(geography: Feature<Geometry>): Coordinates | null {
     if (!geography?.geometry) {
         return null;
     }
 
     const centroid = geoCentroid(geography);
 
-    if (
-        !centroid ||
-        !isFinite(centroid[0]) ||
-        !isFinite(centroid[1]) ||
-        Math.abs(centroid[0]) > 180 ||
-        Math.abs(centroid[1]) > 90
-    ) {
+    if (!centroid || !isFinite(centroid[0]) || !isFinite(centroid[1]) || Math.abs(centroid[0]) > 180 || Math.abs(centroid[1]) > 90) {
         return null;
     }
 
     return createCoordinates(centroid[0], centroid[1]);
 }
 
-export function getGeographyBounds(
-    geography: Feature<Geometry>,
-): [Coordinates, Coordinates] | null {
+export function getGeographyBounds(geography: Feature<Geometry>): [Coordinates, Coordinates] | null {
     if (!geography?.geometry) {
         return null;
     }
@@ -60,15 +50,10 @@ export function getGeographyBounds(
         return null;
     }
 
-    return [
-        createCoordinates(southwest[0], southwest[1]),
-        createCoordinates(northeast[0], northeast[1]),
-    ];
+    return [createCoordinates(southwest[0], southwest[1]), createCoordinates(northeast[0], northeast[1])];
 }
 
-export function getGeographyCoordinates(
-    geography: Feature<Geometry>,
-): Coordinates | null {
+export function getGeographyCoordinates(geography: Feature<Geometry>): Coordinates | null {
     if (!geography?.geometry) {
         return null;
     }
@@ -76,35 +61,35 @@ export function getGeographyCoordinates(
     const { geometry } = geography;
 
     switch (geometry.type) {
-        case 'Point':
+        case "Point":
             if (
                 geometry.coordinates &&
                 Array.isArray(geometry.coordinates) &&
                 geometry.coordinates.length >= 2 &&
-                typeof geometry.coordinates[0] === 'number' &&
-                typeof geometry.coordinates[1] === 'number'
+                typeof geometry.coordinates[0] === "number" &&
+                typeof geometry.coordinates[1] === "number"
             ) {
                 const [lon, lat] = geometry.coordinates;
                 return createCoordinates(lon, lat);
             }
             break;
 
-        case 'LineString':
+        case "LineString":
             if (
                 geometry.coordinates &&
                 Array.isArray(geometry.coordinates) &&
                 geometry.coordinates.length > 0 &&
                 Array.isArray(geometry.coordinates[0]) &&
                 geometry.coordinates[0].length >= 2 &&
-                typeof geometry.coordinates[0][0] === 'number' &&
-                typeof geometry.coordinates[0][1] === 'number'
+                typeof geometry.coordinates[0][0] === "number" &&
+                typeof geometry.coordinates[0][1] === "number"
             ) {
                 const [lon, lat] = geometry.coordinates[0];
                 return createCoordinates(lon, lat);
             }
             break;
 
-        case 'Polygon':
+        case "Polygon":
             if (
                 geometry.coordinates &&
                 Array.isArray(geometry.coordinates) &&
@@ -113,30 +98,30 @@ export function getGeographyCoordinates(
                 geometry.coordinates[0].length > 0 &&
                 Array.isArray(geometry.coordinates[0][0]) &&
                 geometry.coordinates[0][0].length >= 2 &&
-                typeof geometry.coordinates[0][0][0] === 'number' &&
-                typeof geometry.coordinates[0][0][1] === 'number'
+                typeof geometry.coordinates[0][0][0] === "number" &&
+                typeof geometry.coordinates[0][0][1] === "number"
             ) {
                 const [lon, lat] = geometry.coordinates[0][0];
                 return createCoordinates(lon, lat);
             }
             break;
 
-        case 'MultiPoint':
+        case "MultiPoint":
             if (
                 geometry.coordinates &&
                 Array.isArray(geometry.coordinates) &&
                 geometry.coordinates.length > 0 &&
                 Array.isArray(geometry.coordinates[0]) &&
                 geometry.coordinates[0].length >= 2 &&
-                typeof geometry.coordinates[0][0] === 'number' &&
-                typeof geometry.coordinates[0][1] === 'number'
+                typeof geometry.coordinates[0][0] === "number" &&
+                typeof geometry.coordinates[0][1] === "number"
             ) {
                 const [lon, lat] = geometry.coordinates[0];
                 return createCoordinates(lon, lat);
             }
             break;
 
-        case 'MultiLineString':
+        case "MultiLineString":
             if (
                 geometry.coordinates &&
                 Array.isArray(geometry.coordinates) &&
@@ -145,15 +130,15 @@ export function getGeographyCoordinates(
                 geometry.coordinates[0].length > 0 &&
                 Array.isArray(geometry.coordinates[0][0]) &&
                 geometry.coordinates[0][0].length >= 2 &&
-                typeof geometry.coordinates[0][0][0] === 'number' &&
-                typeof geometry.coordinates[0][0][1] === 'number'
+                typeof geometry.coordinates[0][0][0] === "number" &&
+                typeof geometry.coordinates[0][0][1] === "number"
             ) {
                 const [lon, lat] = geometry.coordinates[0][0];
                 return createCoordinates(lon, lat);
             }
             break;
 
-        case 'MultiPolygon':
+        case "MultiPolygon":
             if (
                 geometry.coordinates &&
                 Array.isArray(geometry.coordinates) &&
@@ -164,21 +149,16 @@ export function getGeographyCoordinates(
                 geometry.coordinates[0][0].length > 0 &&
                 Array.isArray(geometry.coordinates[0][0][0]) &&
                 geometry.coordinates[0][0][0].length >= 2 &&
-                typeof geometry.coordinates[0][0][0][0] === 'number' &&
-                typeof geometry.coordinates[0][0][0][1] === 'number'
+                typeof geometry.coordinates[0][0][0][0] === "number" &&
+                typeof geometry.coordinates[0][0][0][1] === "number"
             ) {
                 const [lon, lat] = geometry.coordinates[0][0][0];
                 return createCoordinates(lon, lat);
             }
             break;
 
-        case 'GeometryCollection':
-            if (
-                geometry.geometries &&
-                Array.isArray(geometry.geometries) &&
-                geometry.geometries.length > 0 &&
-                geometry.geometries[0]
-            ) {
+        case "GeometryCollection":
+            if (geometry.geometries && Array.isArray(geometry.geometries) && geometry.geometries.length > 0 && geometry.geometries[0]) {
                 return getGeographyCoordinates({
                     ...geography,
                     geometry: geometry.geometries[0],
@@ -193,9 +173,7 @@ export function getGeographyCoordinates(
     return null;
 }
 
-export function getBestGeographyCoordinates(
-    geography: Feature<Geometry>,
-): Coordinates | null {
+export function getBestGeographyCoordinates(geography: Feature<Geometry>): Coordinates | null {
     const centroid = getGeographyCentroid(geography);
     if (centroid) {
         return centroid;
@@ -208,8 +186,8 @@ export function isValidCoordinates(coords: unknown): coords is Coordinates {
     return (
         Array.isArray(coords) &&
         coords.length === 2 &&
-        typeof coords[0] === 'number' &&
-        typeof coords[1] === 'number' &&
+        typeof coords[0] === "number" &&
+        typeof coords[1] === "number" &&
         isFinite(coords[0]) &&
         isFinite(coords[1]) &&
         Math.abs(coords[0]) <= 180 &&

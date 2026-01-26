@@ -1,22 +1,22 @@
-import { createSignal, createMemo, mergeProps, splitProps, Show, JSX } from 'solid-js';
-import { MarkerProps } from '../types';
-import { useMapContext } from './MapProvider';
+import { createSignal, createMemo, mergeProps, splitProps, Show } from "solid-js";
+import { MarkerProps } from "../types";
+import { useMapContext } from "./MapProvider";
 
 export default function Marker(props: MarkerProps) {
-    const merged = mergeProps({ style: {}, className: '', class: '' }, props);
+    const merged = mergeProps({ style: {}, className: "", class: "" }, props);
     const [local, rest] = splitProps(merged, [
-        'coordinates',
-        'children',
-        'style',
-        'className',
-        'class',
-        'onClick',
-        'onMouseEnter',
-        'onMouseLeave',
-        'onFocus',
-        'onBlur',
-        'onMouseDown',
-        'onMouseUp',
+        "coordinates",
+        "children",
+        "style",
+        "className",
+        "class",
+        "onClick",
+        "onMouseEnter",
+        "onMouseLeave",
+        "onFocus",
+        "onBlur",
+        "onMouseDown",
+        "onMouseUp",
     ]);
 
     const { projection } = useMapContext();
@@ -29,11 +29,12 @@ export default function Marker(props: MarkerProps) {
     });
 
     const currentState = createMemo(() => {
-        return isPressed() || isHover() || isFocused()
-            ? isPressed()
-                ? 'pressed'
-                : 'hover'
-            : 'default';
+        return isPressed() ? "pressed" : isHover() || isFocused() ? "hover" : "default";
+    });
+
+    const currentStyle = createMemo(() => {
+        const style = local.style as Record<string, unknown>;
+        return (style?.[currentState()] as Record<string, string | number>) || {};
     });
 
     return (
@@ -43,37 +44,53 @@ export default function Marker(props: MarkerProps) {
                 class={`rsm-marker ${local.class} ${local.className}`.trim()}
                 style={local.style ? {} : {}}
                 onClick={(evt) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onClick) (local.onClick as any)(evt);
                 }}
                 onMouseEnter={(evt) => {
                     setHover(true);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onMouseEnter) (local.onMouseEnter as any)(evt);
                 }}
                 onMouseLeave={(evt) => {
                     setHover(false);
                     setPressed(false);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onMouseLeave) (local.onMouseLeave as any)(evt);
                 }}
                 onFocus={(evt) => {
                     setFocus(true);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onFocus) (local.onFocus as any)(evt);
                 }}
                 onBlur={(evt) => {
                     setFocus(false);
                     setPressed(false);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onBlur) (local.onBlur as any)(evt);
                 }}
                 onMouseDown={(evt) => {
                     setPressed(true);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onMouseDown) (local.onMouseDown as any)(evt);
                 }}
                 onMouseUp={(evt) => {
                     setPressed(false);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onMouseUp) (local.onMouseUp as any)(evt);
                 }}
                 {...rest}
             >
-                {local.children}
+                {/* Apply styles to children via context or direct props? 
+                    Marker is a group <g>. Logic here implies children inherit or we style the group.
+                    React-simple-maps applies style to <g>. */}
+                <g
+                    fill={currentStyle().fill as string}
+                    stroke={currentStyle().stroke as string}
+                    stroke-width={currentStyle().strokeWidth as string | number}
+                >
+                    {local.children}
+                </g>
             </g>
         </Show>
     );

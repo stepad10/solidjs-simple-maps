@@ -1,13 +1,13 @@
 export const mockTopoJSON = {
-    type: 'Topology',
+    type: "Topology",
     objects: {
         default: {
-            type: 'GeometryCollection',
+            type: "GeometryCollection",
             geometries: [
                 {
-                    type: 'Polygon',
-                    id: '100',
-                    properties: { name: 'Test Country' },
+                    type: "Polygon",
+                    id: "100",
+                    properties: { name: "Test Country" },
                     arcs: [[0]],
                 },
             ],

@@ -20,26 +20,18 @@ npm install solidjs-simple-maps solid-js d3-geo d3-selection d3-zoom topojson-cl
 ## Basic Usage
 
 ```jsx
-import { ComposableMap, Geographies, Geography } from 'solidjs-simple-maps';
+import { ComposableMap, Geographies, Geography } from "solidjs-simple-maps";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 function App() {
-  return (
-    <ComposableMap>
-      <Geographies geography={geoUrl}>
-        {({ geographies }) =>
-          geographies.map((geo) => (
-            <Geography 
-              geography={geo} 
-              fill="#DDD" 
-              stroke="#FFF" 
-            />
-          ))
-        }
-      </Geographies>
-    </ComposableMap>
-  );
+    return (
+        <ComposableMap>
+            <Geographies geography={geoUrl}>
+                {({ geographies }) => geographies.map((geo) => <Geography geography={geo} fill="#DDD" stroke="#FFF" />)}
+            </Geographies>
+        </ComposableMap>
+    );
 }
 ```
 
@@ -50,52 +42,47 @@ function App() {
 You can use the `MapWithMetadata` wrapper to automatically inject SEO tags into the head of your document using `@solidjs/meta`.
 
 ```jsx
-import { MapWithMetadata, Geographies, Geography, MetaProvider } from 'solidjs-simple-maps';
+import { MapWithMetadata, Geographies, Geography, MetaProvider } from "solidjs-simple-maps";
 
 const geoUrl = "...";
 
 function App() {
-  return (
-    <MetaProvider>
-      <MapWithMetadata
-        metadata={{
-          title: "My Awesome Interactive Map",
-          description: "A detailed map of the world created with SolidJS.",
-          keywords: ["map", "solidjs", "world"],
-          author: "Me",
-        }}
-        enableOpenGraph={true}
-        enableTwitterCards={true}
-      >
-        <Geographies geography={geoUrl}>
-          {({ geographies }) => geographies.map(geo => <Geography geography={geo} />)}
-        </Geographies>
-      </MapWithMetadata>
-    </MetaProvider>
-  );
+    return (
+        <MetaProvider>
+            <MapWithMetadata
+                metadata={{
+                    title: "My Awesome Interactive Map",
+                    description: "A detailed map of the world created with SolidJS.",
+                    keywords: ["map", "solidjs", "world"],
+                    author: "Me",
+                }}
+                enableOpenGraph={true}
+                enableTwitterCards={true}
+            >
+                <Geographies geography={geoUrl}>{({ geographies }) => geographies.map((geo) => <Geography geography={geo} />)}</Geographies>
+            </MapWithMetadata>
+        </MetaProvider>
+    );
 }
 ```
 
 ### Handling Events & Errors
 
 ```jsx
-<Geographies 
-  geography={geoUrl}
-  onGeographyError={(error) => console.error("Failed to load map:", error)}
->
-  {({ geographies }) =>
-    geographies.map((geo) => (
-      <Geography
-        geography={geo}
-        onClick={(e) => alert(`You clicked ${geo.properties.name}`)}
-        style={{
-          default: { fill: "#D6D6DA", outline: "none" },
-          hover: { fill: "#F53", outline: "none" },
-          pressed: { fill: "#E42", outline: "none" },
-        }}
-      />
-    ))
-  }
+<Geographies geography={geoUrl} onGeographyError={(error) => console.error("Failed to load map:", error)}>
+    {({ geographies }) =>
+        geographies.map((geo) => (
+            <Geography
+                geography={geo}
+                onClick={(e) => alert(`You clicked ${geo.properties.name}`)}
+                style={{
+                    default: { fill: "#D6D6DA", outline: "none" },
+                    hover: { fill: "#F53", outline: "none" },
+                    pressed: { fill: "#E42", outline: "none" },
+                }}
+            />
+        ))
+    }
 </Geographies>
 ```
 

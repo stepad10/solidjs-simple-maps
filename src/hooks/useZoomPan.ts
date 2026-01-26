@@ -1,16 +1,8 @@
-import { createSignal } from 'solid-js';
-import { useMapContext } from '../components/MapProvider';
-import {
-    Position,
-    Coordinates,
-    ScaleExtent,
-    TranslateExtent,
-    createCoordinates,
-    createTranslateExtent,
-    createScaleExtent,
-} from '../types';
-import { useZoomBehavior } from './useZoomBehavior';
-import { usePanBehavior } from './usePanBehavior';
+import { createSignal, mergeProps } from "solid-js";
+import { useMapContext } from "../components/MapProvider";
+import { Position, Coordinates, ScaleExtent, TranslateExtent, createCoordinates, createTranslateExtent, createScaleExtent } from "../types";
+import { useZoomBehavior } from "./useZoomBehavior";
+import { usePanBehavior } from "./usePanBehavior";
 
 interface UseZoomPanHookProps {
     center: Coordinates;
@@ -24,13 +16,15 @@ interface UseZoomPanHookProps {
 }
 
 export default function useZoomPan(props: UseZoomPanHookProps) {
-    // Defaults
-    const translateExtent = props.translateExtent ?? createTranslateExtent(
-        createCoordinates(-Infinity, -Infinity),
-        createCoordinates(Infinity, Infinity),
+    // Defaults with reactivity
+    const merged = mergeProps(
+        {
+            translateExtent: createTranslateExtent(createCoordinates(-Infinity, -Infinity), createCoordinates(Infinity, Infinity)),
+            scaleExtent: createScaleExtent(1, 8),
+            zoom: 1,
+        },
+        props,
     );
-    const scaleExtent = props.scaleExtent ?? createScaleExtent(1, 8);
-    const zoom = props.zoom ?? 1;
 
     const mapContext = useMapContext();
 
@@ -44,32 +38,42 @@ export default function useZoomPan(props: UseZoomPanHookProps) {
     const bypassEvents = { current: false };
 
     const { getZoomBehavior } = useZoomBehavior({
-        get mapRef() { return mapRef(); }, // Access signal
+        get mapRef() {
+            return mapRef();
+        },
         width: mapContext.width,
         height: mapContext.height,
         projection: mapContext.projection,
-        scaleExtent,
-        translateExtent,
-        filterZoomEvent: props.filterZoomEvent,
-        onZoomStart: props.onMoveStart,
-        onZoomEnd: props.onMoveEnd,
-        onMove: props.onMove,
+        get scaleExtent() { return merged.scaleExtent },
+        get translateExtent() { return merged.translateExtent },
+        get filterZoomEvent() { return merged.filterZoomEvent },
+        get onZoomStart() { return merged.onMoveStart },
+        get onZoomEnd() { return merged.onMoveEnd },
+        get onMove() { return merged.onMove },
         bypassEvents,
-        onZoom: (transform) => {
+        onZoom: (transform: { x: number; y: number; k: number }) => {
             setPosition({ x: transform.x, y: transform.y, k: transform.k });
-        }
-    });
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any); // Type cast due to getters in object literal which might not match exact interface if strictly checked, 
+    // but allows tracking. Ideally UseZoomBehaviorProps should accept accessors. 
+    // However, looking at useZoomBehavior, it accesses props properties directly in createEffect.
+    // Which means passing an object with getters WORKS for Solid's proxy wrapping or simple property access inside effect.
+    // BUT useZoomBehavior takes `props: UseZoomBehaviorProps`. 
+    // If useZoomBehavior just uses `props.scaleExtent` inside effect, getters work.
 
     usePanBehavior({
-        get mapRef() { return mapRef(); }, // Access signal
+        get mapRef() {
+            return mapRef();
+        },
         width: mapContext.width,
         height: mapContext.height,
         projection: mapContext.projection,
-        center: props.center,
-        zoom: zoom,
+        get center() { return merged.center },
+        get zoom() { return merged.zoom },
         bypassEvents,
         onPositionChange: setPosition,
-        getZoomBehavior
+        getZoomBehavior,
     });
 
     const transformString = () => `translate(${position().x} ${position().y}) scale(${position().k})`;
@@ -78,6 +82,6 @@ export default function useZoomPan(props: UseZoomPanHookProps) {
         setMapRef,
         position,
         transformString,
-        isPending: false
+        isPending: false,
     };
 }
