@@ -45,12 +45,18 @@ importers:
       '@types/d3-zoom':
         specifier: ^3.0.0
         version: 3.0.8
+      '@types/geojson':
+        specifier: ^7946.0.16
+        version: 7946.0.16
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.30
       '@types/topojson-client':
         specifier: ^3.0.0
         version: 3.1.5
+      '@types/topojson-specification':
+        specifier: ^1.0.5
+        version: 1.0.5
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.53.1
         version: 8.53.1(@typescript-eslint/parser@8.53.1(eslint@9.39.2)(typescript@5.7.3))(eslint@9.39.2)(typescript@5.7.3)
