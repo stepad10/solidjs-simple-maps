@@ -84,11 +84,7 @@ export default function Marker(props: MarkerProps) {
                 {/* Apply styles to children via context or direct props? 
                     Marker is a group <g>. Logic here implies children inherit or we style the group.
                     React-simple-maps applies style to <g>. */}
-                <g
-                    fill={currentStyle().fill as string}
-                    stroke={currentStyle().stroke as string}
-                    stroke-width={currentStyle().strokeWidth as string | number}
-                >
+                <g fill={currentStyle().fill as string} stroke={currentStyle().stroke as string} stroke-width={currentStyle().strokeWidth as string | number}>
                     {local.children}
                 </g>
             </g>

@@ -109,7 +109,7 @@ describe("ZoomableGroup", () => {
         rect?.dispatchEvent(new WheelEvent("wheel", { deltaY: -100, bubbles: true }));
 
         // Wait for potential async d3 updates
-        // Since we mocked SVGElement.getScreenCTM, d3 might calculate something. 
+        // Since we mocked SVGElement.getScreenCTM, d3 might calculate something.
         // Note: interacting with d3 via dispatchEvent in JSDOM is flaky without specific d3 mocks.
         // If this verification fails, we might rely on the prop update test which is more robust in this env.
     });

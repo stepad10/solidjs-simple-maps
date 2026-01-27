@@ -44,12 +44,24 @@ export default function useZoomPan(props: UseZoomPanHookProps) {
         width: mapContext.width,
         height: mapContext.height,
         projection: mapContext.projection,
-        get scaleExtent() { return merged.scaleExtent },
-        get translateExtent() { return merged.translateExtent },
-        get filterZoomEvent() { return merged.filterZoomEvent },
-        get onZoomStart() { return merged.onMoveStart },
-        get onZoomEnd() { return merged.onMoveEnd },
-        get onMove() { return merged.onMove },
+        get scaleExtent() {
+            return merged.scaleExtent;
+        },
+        get translateExtent() {
+            return merged.translateExtent;
+        },
+        get filterZoomEvent() {
+            return merged.filterZoomEvent;
+        },
+        get onZoomStart() {
+            return merged.onMoveStart;
+        },
+        get onZoomEnd() {
+            return merged.onMoveEnd;
+        },
+        get onMove() {
+            return merged.onMove;
+        },
         bypassEvents,
         onZoom: (transform: { x: number; y: number; k: number }) => {
             setPosition({ x: transform.x, y: transform.y, k: transform.k });
@@ -63,8 +75,12 @@ export default function useZoomPan(props: UseZoomPanHookProps) {
         width: mapContext.width,
         height: mapContext.height,
         projection: mapContext.projection,
-        get center() { return merged.center },
-        get zoom() { return merged.zoom },
+        get center() {
+            return merged.center;
+        },
+        get zoom() {
+            return merged.zoom;
+        },
         bypassEvents,
         onPositionChange: setPosition,
         getZoomBehavior,

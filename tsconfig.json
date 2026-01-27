@@ -8,22 +8,12 @@
         "esModuleInterop": true,
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
-        "types": [
-            "vite/client",
-            "vitest/globals"
-        ],
+        "types": ["vite/client", "vitest/globals"],
         "noEmit": true,
         "skipLibCheck": true,
         "paths": {
-            "solidjs-simple-maps": [
-                "./src/index.ts"
-            ]
+            "solidjs-simple-maps": ["./src/index.ts"]
         }
     },
-    "include": [
-        "src",
-        "tests",
-        "dev",
-        "examples"
-    ]
+    "include": ["src", "tests", "dev", "examples"]
 }

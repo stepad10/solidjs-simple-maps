@@ -138,5 +138,4 @@ describe("Geographies and Geography", () => {
         // Verify fetch was NOT called
         expect(fetchSpy).not.toHaveBeenCalled();
     });
-
 });

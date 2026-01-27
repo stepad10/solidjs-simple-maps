@@ -27,7 +27,7 @@ describe("MapProvider", () => {
 
     it("throws error when used outside provider", () => {
         // Suppress console.error for expected throw
-        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => { });
+        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
         expect(() => {
             render(() => <MapConsumer />);
@@ -40,7 +40,7 @@ describe("MapProvider", () => {
         const config = {
             center: createCoordinates(10, 10),
             rotate: createRotationAngles(0, 0, 0),
-            scale: 200
+            scale: 200,
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,9 +84,9 @@ describe("MapProvider", () => {
     });
 
     it("throws error for unknown projection sting", () => {
-        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => { });
+        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-        // We need to render this inside an ErrorBoundary to catch it gracefully in Solid tests usually, 
+        // We need to render this inside an ErrorBoundary to catch it gracefully in Solid tests usually,
         // or expect the render function to throw if it happens during render phase.
         // MapProvider creates projection in a memo, so it might throw during render.
 
@@ -114,7 +114,7 @@ describe("ZoomPanProvider", () => {
     });
 
     it("throws error when used outside provider", () => {
-        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => { });
+        const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
         expect(() => {
             render(() => <ZoomPanConsumer />);

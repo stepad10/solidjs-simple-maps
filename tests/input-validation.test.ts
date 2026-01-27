@@ -13,7 +13,7 @@ import {
     sanitizeSVG,
     validateStyleObject,
     validateEventHandler,
-    validateComponentProps
+    validateComponentProps,
 } from "../src/utils/input-validation";
 import { createRotationAngles, createParallels } from "../src/types";
 
@@ -113,7 +113,7 @@ describe("Input Validation Utils", () => {
             const input = {
                 scale: 100,
                 center: [0, 0],
-                rotate: [0, -10, 0]
+                rotate: [0, -10, 0],
             };
             const result = validateProjectionConfig(input);
             expect(result.scale).toBe(100);
@@ -124,7 +124,7 @@ describe("Input Validation Utils", () => {
         it("ignores extra properties but validates shape", () => {
             const input = {
                 scale: 100,
-                unknownProp: "test"
+                unknownProp: "test",
             };
             const result = validateProjectionConfig(input);
             expect(result.scale).toBe(100);
@@ -154,7 +154,7 @@ describe("Input Validation Utils", () => {
             const result = validateSecurityConfig({
                 TIMEOUT_MS: 5000,
                 MAX_RESPONSE_SIZE: 2048,
-                STRICT_HTTPS_ONLY: true
+                STRICT_HTTPS_ONLY: true,
             });
             expect(result.TIMEOUT_MS).toBe(5000);
             expect(result.MAX_RESPONSE_SIZE).toBe(2048);
@@ -217,7 +217,7 @@ describe("Input Validation Utils", () => {
         });
 
         it("sanitizes dangerous attributes", () => {
-            const input = "<svg onclick=\"alert(1)\">content</svg>";
+            const input = '<svg onclick="alert(1)">content</svg>';
             expect(sanitizeSVG(input)).toBe("<svg>content</svg>");
         });
 
@@ -247,7 +247,7 @@ describe("Input Validation Utils", () => {
 
     describe("validateEventHandler", () => {
         it("allows safe functions", () => {
-            const handler = () => { };
+            const handler = () => {};
             expect(validateEventHandler(handler)).toBe(handler);
         });
 
@@ -266,8 +266,8 @@ describe("Input Validation Utils", () => {
             const props = {
                 className: "test-class",
                 style: { fill: "red" },
-                onClick: () => { },
-                unknown: "value"
+                onClick: () => {},
+                unknown: "value",
             };
             const allowed = ["className", "style", "onClick"];
 

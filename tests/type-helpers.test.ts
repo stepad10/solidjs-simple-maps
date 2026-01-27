@@ -11,7 +11,7 @@ import {
     createZoomConfig,
     createPanConfig,
     createZoomPanConfig,
-    Coordinates
+    Coordinates,
 } from "../src/types";
 
 describe("Type Helpers", () => {
@@ -31,7 +31,10 @@ describe("Type Helpers", () => {
         expect(scaleExtent).toEqual([1, 10]);
 
         const translateExtent = createTranslateExtent(createCoordinates(0, 0), createCoordinates(100, 100));
-        expect(translateExtent).toEqual([[0, 0], [100, 100]]);
+        expect(translateExtent).toEqual([
+            [0, 0],
+            [100, 100],
+        ]);
 
         const rotation = createRotationAngles(0, 45, 0);
         expect(rotation).toEqual([0, 45, 0]);

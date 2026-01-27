@@ -16,7 +16,8 @@ An SVG map chart component built for SolidJS, heavily inspired by `react-simple-
 ```bash
 npm install solidjs-simple-maps solid-js @solidjs/meta
 ```
-*Note: `d3-geo`, `d3-selection`, `d3-zoom` and `topojson-client` are installed automatically as dependencies. `@solidjs/meta` is required if you use `MapWithMetadata`.*
+
+_Note: `d3-geo`, `d3-selection`, `d3-zoom` and `topojson-client` are installed automatically as dependencies. `@solidjs/meta` is required if you use `MapWithMetadata`._
 
 ## Basic Usage
 
@@ -32,11 +33,7 @@ function App() {
     return (
         <ComposableMap>
             <Geographies geography={geoUrl}>
-                {({ geographies }) => (
-                    <For each={geographies}>
-                        {(geo) => <Geography geography={geo} fill="#DDD" stroke="#FFF" />}
-                    </For>
-                )}
+                {({ geographies }) => <For each={geographies}>{(geo) => <Geography geography={geo} fill="#DDD" stroke="#FFF" />}</For>}
             </Geographies>
         </ComposableMap>
     );
@@ -58,11 +55,7 @@ function App() {
         <ComposableMap>
             <ZoomableGroup minZoom={1} maxZoom={10}>
                 <Geographies geography={geoUrl}>
-                    {({ geographies }) => (
-                        <For each={geographies}>
-                            {(geo) => <Geography geography={geo} fill="#EAEAEC" stroke="#D6D6DA" />}
-                        </For>
-                    )}
+                    {({ geographies }) => <For each={geographies}>{(geo) => <Geography geography={geo} fill="#EAEAEC" stroke="#D6D6DA" />}</For>}
                 </Geographies>
             </ZoomableGroup>
         </ComposableMap>
@@ -97,13 +90,7 @@ function App() {
                 enableOpenGraph={true}
                 enableTwitterCards={true}
             >
-                <Geographies geography={geoUrl}>
-                    {({ geographies }) => (
-                        <For each={geographies}>
-                            {(geo) => <Geography geography={geo} />}
-                        </For>
-                    )}
-                </Geographies>
+                <Geographies geography={geoUrl}>{({ geographies }) => <For each={geographies}>{(geo) => <Geography geography={geo} />}</For>}</Geographies>
             </MapWithMetadata>
         </MetaProvider>
     );

@@ -1,12 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import {
-    isString,
-    getFeatures,
-    getMesh,
-    prepareMesh,
-    prepareFeatures,
-    createConnectorPath
-} from "../src/utils/geography-processing";
+import { isString, getFeatures, getMesh, prepareMesh, prepareFeatures, createConnectorPath } from "../src/utils/geography-processing";
 import { FeatureCollection, Feature, Point } from "geojson";
 import { Topology } from "topojson-specification";
 
@@ -14,12 +7,12 @@ import { Topology } from "topojson-specification";
 const mockFeature: Feature<Point> = {
     type: "Feature",
     geometry: { type: "Point", coordinates: [0, 0] },
-    properties: {}
+    properties: {},
 };
 
 const mockFeatureCollection: FeatureCollection = {
     type: "FeatureCollection",
-    features: [mockFeature]
+    features: [mockFeature],
 };
 
 // Minimal Topology Mock
@@ -29,12 +22,12 @@ const mockTopology: Topology = {
     objects: {
         default: {
             type: "GeometryCollection",
-            geometries: [{ type: "Point", coordinates: [0, 0] }]
+            geometries: [{ type: "Point", coordinates: [0, 0] }],
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any
+        } as any,
     },
     arcs: [],
-    transform: { scale: [1, 1], translate: [0, 0] }
+    transform: { scale: [1, 1], translate: [0, 0] },
 };
 
 describe("Geography Processing", () => {
@@ -59,7 +52,7 @@ describe("Geography Processing", () => {
         });
 
         it("extracts from Topology", () => {
-            // We rely on topojson-client implementation being correct, 
+            // We rely on topojson-client implementation being correct,
             // we just test our wrapper logic selecting the first object
             const result = getFeatures(mockTopology);
             expect(result).toHaveLength(1);
@@ -100,7 +93,13 @@ describe("Geography Processing", () => {
         it("generates path strings", () => {
             const mockPath = vi.fn().mockReturnValue("M0,0L10,10");
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const mesh = { type: "LineString", coordinates: [[0, 0], [10, 10]] } as any;
+            const mesh = {
+                type: "LineString",
+                coordinates: [
+                    [0, 0],
+                    [10, 10],
+                ],
+            } as any;
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const result = prepareMesh(mesh, mesh, mockPath as any);
@@ -152,8 +151,8 @@ describe("Geography Processing", () => {
             const mockLineGen = vi.fn().mockReturnValue("M0,0L10,10");
             const mockCurve = vi.fn().mockReturnValue({
                 x: () => ({
-                    y: () => mockLineGen
-                })
+                    y: () => mockLineGen,
+                }),
             });
 
             // Our helper expects curveFactory() to return builder chain
@@ -162,7 +161,9 @@ describe("Geography Processing", () => {
         });
 
         it("returns empty string on error", () => {
-            const throwingCurve = () => { throw new Error() };
+            const throwingCurve = () => {
+                throw new Error();
+            };
             expect(createConnectorPath([0, 0], [10, 10], throwingCurve)).toBe("");
         });
     });

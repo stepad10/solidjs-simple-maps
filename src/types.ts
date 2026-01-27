@@ -58,45 +58,45 @@ export type ConditionalStyle<T = JSX.CSSProperties> = {
 
 export type GeographyPropsWithErrorHandling<T extends boolean> = T extends true
     ? {
-        errorBoundary: true;
-        onGeographyError: (error: Error) => void;
-        fallback: ErrorBoundaryFallback;
-    }
+          errorBoundary: true;
+          onGeographyError: (error: Error) => void;
+          fallback: ErrorBoundaryFallback;
+      }
     : {
-        errorBoundary?: false;
-        onGeographyError?: (error: Error) => void;
-        fallback?: never;
-    };
+          errorBoundary?: false;
+          onGeographyError?: (error: Error) => void;
+          fallback?: never;
+      };
 
 export type ZoomBehaviorProps<T extends boolean> = T extends true
     ? {
-        enableZoom: true;
-        minZoom: number;
-        maxZoom: number;
-        scaleExtent: ScaleExtent;
-    }
+          enableZoom: true;
+          minZoom: number;
+          maxZoom: number;
+          scaleExtent: ScaleExtent;
+      }
     : {
-        enableZoom?: false;
-        minZoom?: never;
-        maxZoom?: never;
-        scaleExtent?: never;
-    };
+          enableZoom?: false;
+          minZoom?: never;
+          maxZoom?: never;
+          scaleExtent?: never;
+      };
 
 export type PanBehaviorProps<T extends boolean> = T extends true
     ? {
-        enablePan: true;
-        translateExtent: TranslateExtent;
-    }
+          enablePan: true;
+          translateExtent: TranslateExtent;
+      }
     : {
-        enablePan?: false;
-        translateExtent?: never;
-    };
+          enablePan?: false;
+          translateExtent?: never;
+      };
 
 export type ProjectionConfigConditional<T extends string> = T extends "geoAlbers"
     ? ProjectionConfig & Required<Pick<ProjectionConfig, "parallels">>
     : T extends "geoConicEqualArea" | "geoConicConformal"
-    ? ProjectionConfig & Required<Pick<ProjectionConfig, "parallels">>
-    : ProjectionConfig;
+      ? ProjectionConfig & Required<Pick<ProjectionConfig, "parallels">>
+      : ProjectionConfig;
 
 export type ExtractStyleVariant<T> = T extends ConditionalStyle<infer U> ? U : never;
 
@@ -112,13 +112,13 @@ export type TypeGuard<T> = (value: unknown) => value is T;
 
 export type GeographyError = Error & {
     type:
-    | "GEOGRAPHY_LOAD_ERROR"
-    | "GEOGRAPHY_PARSE_ERROR"
-    | "PROJECTION_ERROR"
-    | "VALIDATION_ERROR"
-    | "SECURITY_ERROR"
-    | "CONFIGURATION_ERROR"
-    | "CONTEXT_ERROR";
+        | "GEOGRAPHY_LOAD_ERROR"
+        | "GEOGRAPHY_PARSE_ERROR"
+        | "PROJECTION_ERROR"
+        | "VALIDATION_ERROR"
+        | "SECURITY_ERROR"
+        | "CONFIGURATION_ERROR"
+        | "CONTEXT_ERROR";
     geography?: string;
     details?: Record<string, unknown>;
     timestamp?: string;
@@ -162,20 +162,20 @@ export interface ComposableMapProps<P extends string = string, M extends boolean
     debug?: boolean;
 
     metadata?: M extends true
-    ? Required<{
-        title: string;
-        description: string;
-        keywords: string[];
-        author?: string;
-        canonicalUrl?: string;
-    }>
-    : {
-        title?: string;
-        description?: string;
-        keywords?: string[];
-        author?: string;
-        canonicalUrl?: string;
-    };
+        ? Required<{
+              title: string;
+              description: string;
+              keywords: string[];
+              author?: string;
+              canonicalUrl?: string;
+          }>
+        : {
+              title?: string;
+              description?: string;
+              keywords?: string[];
+              author?: string;
+              canonicalUrl?: string;
+          };
 }
 
 export type GeographiesProps<E extends boolean = false> = Omit<JSX.SvgSVGAttributes<SVGGElement>, "children" | "onError"> &

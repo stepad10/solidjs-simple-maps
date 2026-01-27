@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-    createGeographyFetchError,
-    createValidationError,
-    createSecurityError,
-    createGeographyError
-} from "../src/utils/error-utils";
+import { createGeographyFetchError, createValidationError, createSecurityError, createGeographyError } from "../src/utils/error-utils";
 
 describe("Error Utils", () => {
     describe("createGeographyFetchError", () => {

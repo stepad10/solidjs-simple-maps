@@ -29,17 +29,11 @@ export function configureValidation(config: Partial<ValidationConfig>): void {
 
 export function sanitizeString(input: unknown, allowHTML: boolean = false): string {
     if (typeof input !== "string") {
-        throw createGeographyFetchError(
-            "VALIDATION_ERROR",
-            `Expected string, got ${typeof input}`
-        );
+        throw createGeographyFetchError("VALIDATION_ERROR", `Expected string, got ${typeof input}`);
     }
 
     if (input.length > currentValidationConfig.maxStringLength) {
-        throw createGeographyFetchError(
-            "VALIDATION_ERROR",
-            `String too long: ${input.length} characters (max: ${currentValidationConfig.maxStringLength})`,
-        );
+        throw createGeographyFetchError("VALIDATION_ERROR", `String too long: ${input.length} characters (max: ${currentValidationConfig.maxStringLength})`);
     }
 
     let sanitized = input;
@@ -118,10 +112,7 @@ export function validateArray<T>(input: unknown, itemValidator?: (item: unknown,
     }
 
     if (input.length > currentValidationConfig.maxArrayLength) {
-        throw createGeographyFetchError(
-            "VALIDATION_ERROR",
-            `Array too long: ${input.length} items (max: ${currentValidationConfig.maxArrayLength})`,
-        );
+        throw createGeographyFetchError("VALIDATION_ERROR", `Array too long: ${input.length} items (max: ${currentValidationConfig.maxArrayLength})`);
     }
 
     if (itemValidator) {
@@ -146,10 +137,7 @@ export function validateObject(input: unknown, depth: number = 0): Record<string
     }
 
     if (depth > currentValidationConfig.maxObjectDepth) {
-        throw createGeographyFetchError(
-            "VALIDATION_ERROR",
-            `Object nesting too deep: ${depth} levels (max: ${currentValidationConfig.maxObjectDepth})`,
-        );
+        throw createGeographyFetchError("VALIDATION_ERROR", `Object nesting too deep: ${depth} levels (max: ${currentValidationConfig.maxObjectDepth})`);
     }
 
     const obj = input as Record<string, unknown>;

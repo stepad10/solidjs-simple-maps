@@ -4,7 +4,7 @@ import {
     getGeographyBounds,
     getGeographyCoordinates,
     getBestGeographyCoordinates,
-    isValidCoordinates
+    isValidCoordinates,
 } from "../src/utils/geography-utils";
 import { Feature, Geometry, Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection } from "geojson";
 
@@ -13,7 +13,7 @@ function createFeature<G extends Geometry>(geometry: G): Feature<G> {
     return {
         type: "Feature",
         properties: {},
-        geometry
+        geometry,
     };
 }
 
@@ -30,27 +30,67 @@ describe("Geography Utils", () => {
         });
 
         it("handles LineString", () => {
-            const feat = createFeature<LineString>({ type: "LineString", coordinates: [[10, 20], [30, 40]] });
+            const feat = createFeature<LineString>({
+                type: "LineString",
+                coordinates: [
+                    [10, 20],
+                    [30, 40],
+                ],
+            });
             expect(getGeographyCoordinates(feat)).toEqual([10, 20]); // First point
         });
 
         it("handles Polygon", () => {
-            const feat = createFeature<Polygon>({ type: "Polygon", coordinates: [[[10, 20], [30, 40], [10, 20]]] });
+            const feat = createFeature<Polygon>({
+                type: "Polygon",
+                coordinates: [
+                    [
+                        [10, 20],
+                        [30, 40],
+                        [10, 20],
+                    ],
+                ],
+            });
             expect(getGeographyCoordinates(feat)).toEqual([10, 20]); // First point of first ring
         });
 
         it("handles MultiPoint", () => {
-            const feat = createFeature<MultiPoint>({ type: "MultiPoint", coordinates: [[10, 20], [30, 40]] });
+            const feat = createFeature<MultiPoint>({
+                type: "MultiPoint",
+                coordinates: [
+                    [10, 20],
+                    [30, 40],
+                ],
+            });
             expect(getGeographyCoordinates(feat)).toEqual([10, 20]); // First point
         });
 
         it("handles MultiLineString", () => {
-            const feat = createFeature<MultiLineString>({ type: "MultiLineString", coordinates: [[[10, 20], [30, 40]]] });
+            const feat = createFeature<MultiLineString>({
+                type: "MultiLineString",
+                coordinates: [
+                    [
+                        [10, 20],
+                        [30, 40],
+                    ],
+                ],
+            });
             expect(getGeographyCoordinates(feat)).toEqual([10, 20]); // First point of first line
         });
 
         it("handles MultiPolygon", () => {
-            const feat = createFeature<MultiPolygon>({ type: "MultiPolygon", coordinates: [[[[10, 20], [30, 40], [10, 20]]]] });
+            const feat = createFeature<MultiPolygon>({
+                type: "MultiPolygon",
+                coordinates: [
+                    [
+                        [
+                            [10, 20],
+                            [30, 40],
+                            [10, 20],
+                        ],
+                    ],
+                ],
+            });
             expect(getGeographyCoordinates(feat)).toEqual([10, 20]); // First point of first ring of first polygon
         });
 
@@ -101,10 +141,19 @@ describe("Geography Utils", () => {
 
     describe("getGeographyBounds", () => {
         it("calculates bounds", () => {
-            const feat = createFeature<LineString>({ type: "LineString", coordinates: [[0, 0], [10, 10]] });
+            const feat = createFeature<LineString>({
+                type: "LineString",
+                coordinates: [
+                    [0, 0],
+                    [10, 10],
+                ],
+            });
             const bounds = getGeographyBounds(feat);
             // d3-geo bounds: [[minX, minY], [maxX, maxY]]
-            expect(bounds).toEqual([[0, 0], [10, 10]]);
+            expect(bounds).toEqual([
+                [0, 0],
+                [10, 10],
+            ]);
         });
 
         it("returns null for bad geometry", () => {

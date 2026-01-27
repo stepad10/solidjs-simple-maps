@@ -8,11 +8,7 @@ const ZoomableMap: Component = () => {
         <ComposableMap>
             <ZoomableGroup minZoom={1} maxZoom={10}>
                 <Geographies geography={geoUrl}>
-                    {({ geographies }) => (
-                        <For each={geographies}>
-                            {(geo) => <Geography geography={geo} fill="#EAEAEC" stroke="#D6D6DA" />}
-                        </For>
-                    )}
+                    {({ geographies }) => <For each={geographies}>{(geo) => <Geography geography={geo} fill="#EAEAEC" stroke="#D6D6DA" />}</For>}
                 </Geographies>
             </ZoomableGroup>
         </ComposableMap>

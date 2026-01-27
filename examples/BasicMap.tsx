@@ -7,11 +7,7 @@ const BasicMap: Component = () => {
     return (
         <ComposableMap>
             <Geographies geography={geoUrl}>
-                {({ geographies }) => (
-                    <For each={geographies}>
-                        {(geo) => <Geography geography={geo} fill="#DDD" stroke="#FFF" />}
-                    </For>
-                )}
+                {({ geographies }) => <For each={geographies}>{(geo) => <Geography geography={geo} fill="#DDD" stroke="#FFF" />}</For>}
             </Geographies>
         </ComposableMap>
     );

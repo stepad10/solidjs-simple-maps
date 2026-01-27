@@ -8,7 +8,7 @@ import {
     toDegrees,
     normalizeLongitude,
     normalizeLatitude,
-    createNormalizedCoordinates
+    createNormalizedCoordinates,
 } from "../src/utils/coordinate-utils";
 import { createCoordinates } from "../src/types";
 
@@ -26,10 +26,10 @@ describe("Coordinate Utils", () => {
             // Logic check:
             // xOffset = (800 - 800) / 2 = 0
             // yOffset = (600 - 600) / 2 = 0
-            // lon = 400 - (0 + 0)/1 = 400? 
+            // lon = 400 - (0 + 0)/1 = 400?
             // The formula in getCoords: lon = w/2 - (xOffset + t.x)/t.k
             // This suggests the "coordinates" returned are raw pixels, not geographic lon/lat?
-            // Let's verify what the function actually does. 
+            // Let's verify what the function actually does.
             // It returns `createCoordinates(lon, lat)`.
             // In d3-geo terms, if this is used for projection center, it might be pixel coordinates?
 

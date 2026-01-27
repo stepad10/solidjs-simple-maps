@@ -18,13 +18,7 @@ const MapWithSEO: Component = () => {
                 enableOpenGraph={true}
                 enableTwitterCards={true}
             >
-                <Geographies geography={geoUrl}>
-                    {({ geographies }) => (
-                        <For each={geographies}>
-                            {(geo) => <Geography geography={geo} />}
-                        </For>
-                    )}
-                </Geographies>
+                <Geographies geography={geoUrl}>{({ geographies }) => <For each={geographies}>{(geo) => <Geography geography={geo} />}</For>}</Geographies>
             </MapWithMetadata>
         </MetaProvider>
     );
