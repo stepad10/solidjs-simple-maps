@@ -27,8 +27,12 @@ export default function Geographies(props: GeographiesProps<boolean>) {
     const mapContext = useMapContext();
 
     const geoData = useGeographies({
-        geography: local.geography,
-        parseGeographies: local.parseGeographies,
+        get geography() {
+            return local.geography;
+        },
+        get parseGeographies() {
+            return local.parseGeographies;
+        },
     });
 
     createEffect(() => {

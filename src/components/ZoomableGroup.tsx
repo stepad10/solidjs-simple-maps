@@ -62,14 +62,14 @@ export default function ZoomableGroup(props: ZoomableGroupPropsUnion) {
     });
 
     const { setMapRef, position, transformString } = useZoomPan({
-        center: local.center,
-        zoom: local.zoom,
-        filterZoomEvent: local.filterZoomEvent,
-        onMoveStart: local.onMoveStart,
-        onMove: local.onMove,
-        onMoveEnd: local.onMoveEnd,
-        scaleExtent: createScaleExtent(config().minZoom, config().maxZoom),
-        translateExtent: config().translateExtent,
+        get center() { return local.center; },
+        get zoom() { return local.zoom; },
+        get filterZoomEvent() { return local.filterZoomEvent; },
+        get onMoveStart() { return local.onMoveStart; },
+        get onMove() { return local.onMove; },
+        get onMoveEnd() { return local.onMoveEnd; },
+        get scaleExtent() { return createScaleExtent(config().minZoom, config().maxZoom); },
+        get translateExtent() { return config().translateExtent; },
     });
 
     return (
