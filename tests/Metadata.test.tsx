@@ -54,8 +54,8 @@ describe("MapWithMetadata", () => {
             <MetaProvider>
                 <MapWithMetadata
                     enableSEO={false}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    metadata={{ title: "Hidden" } as any}
+                    // @ts-expect-error Testing partial metadata
+                    metadata={{ title: "Hidden" }}
                 >
                     <ComposableMap />
                 </MapWithMetadata>
@@ -72,8 +72,8 @@ describe("MapWithMetadata", () => {
             <MetaProvider>
                 <MapWithMetadata
                     preset="worldMap"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    metadata={{} as any}
+                    // @ts-expect-error Testing preset defaults
+                    metadata={{}}
                 >
                     <ComposableMap />
                 </MapWithMetadata>
@@ -91,8 +91,8 @@ describe("MapWithMetadata", () => {
             <MetaProvider>
                 <MapWithMetadata
                     preset="worldMap"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    metadata={{ title: "Custom Title" } as any}
+                    // @ts-expect-error Testing partial override
+                    metadata={{ title: "Custom Title" }}
                 >
                     <ComposableMap />
                 </MapWithMetadata>
@@ -112,8 +112,8 @@ describe("MapWithMetadata", () => {
                 <MapWithMetadata
                     enableOpenGraph={false}
                     enableTwitterCards={false}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    metadata={{ title: "Social Map" } as any}
+                    // @ts-expect-error Testing partial metadata
+                    metadata={{ title: "Social Map" }}
                 >
                     <ComposableMap />
                 </MapWithMetadata>

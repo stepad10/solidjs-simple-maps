@@ -3,6 +3,7 @@ import { render, waitFor, screen } from "@solidjs/testing-library";
 import { ErrorBoundary } from "solid-js";
 import { ComposableMap, Geographies, Geography } from "../src";
 import { mockTopoJSON } from "./mocks/topojson";
+import { Topology } from "topojson-specification";
 
 // Mock fetch
 const fetchSpy = vi.fn();
@@ -121,8 +122,7 @@ describe("Geographies and Geography", () => {
     });
 
     it("renders geographies supplied as object data", async () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const geoData = mockTopoJSON as any;
+        const geoData = mockTopoJSON as unknown as Topology;
         render(() => (
             <ComposableMap>
                 <Geographies geography={geoData}>

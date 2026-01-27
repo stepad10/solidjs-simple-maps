@@ -190,6 +190,9 @@ export function validateProjectionConfig(input: unknown): ProjectionConfig {
 }
 
 export function sanitizeSVG(svgContent: string): string {
+    if (typeof svgContent !== "string") {
+        return "";
+    }
     if (!currentValidationConfig.allowUnsafeContent) {
         let sanitized = svgContent
             .replace(/<script[^>]*>.*?<\/script>/gis, "")

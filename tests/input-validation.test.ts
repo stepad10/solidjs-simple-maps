@@ -15,7 +15,7 @@ import {
     validateEventHandler,
     validateComponentProps,
 } from "../src/utils/input-validation";
-import { createRotationAngles, createParallels } from "../src/types";
+import { createRotationAngles, createParallels, ProjectionConfig } from "../src/types";
 
 describe("Input Validation Utils", () => {
     afterEach(() => {
@@ -128,8 +128,7 @@ describe("Input Validation Utils", () => {
             };
             const result = validateProjectionConfig(input);
             expect(result.scale).toBe(100);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect((result as any).unknownProp).toBeUndefined();
+            expect((result as Record<string, unknown>).unknownProp).toBeUndefined();
         });
 
         it("validates parallels", () => {
@@ -144,8 +143,7 @@ describe("Input Validation Utils", () => {
         });
 
         it("rejects invalid input type", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect(() => validateProjectionConfig("invalid" as any)).toThrow("Expected object");
+            expect(() => validateProjectionConfig("invalid" as unknown as ProjectionConfig)).toThrow("Expected object");
         });
     });
 
@@ -181,8 +179,7 @@ describe("Input Validation Utils", () => {
         });
 
         it("uses item validator", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const validator = (item: any) => validateNumber(item);
+            const validator = (item: unknown) => validateNumber(item as number);
             expect(validateArray([1, 2], validator)).toEqual([1, 2]);
             expect(() => validateArray([1, "bad"], validator)).toThrow("Invalid array item at index 1");
         });
@@ -227,8 +224,7 @@ describe("Input Validation Utils", () => {
             expect(sanitizeSVG(input)).toBe(input);
         });
         it("returns empty string for invalid input", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect(sanitizeSVG({} as any)).toBe("");
+            expect(sanitizeSVG({} as unknown as string)).toBe("");
         });
         it("allows safe style properties", () => {
             const style = { fill: "red", strokeWidth: 2, fontSize: "12px" };

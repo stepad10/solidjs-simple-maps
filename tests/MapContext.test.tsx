@@ -3,6 +3,7 @@ import { render, screen } from "@solidjs/testing-library";
 import { MapProvider, useMapContext } from "../src/components/MapProvider";
 import { ZoomPanProvider, useZoomPanContext } from "../src/components/ZoomPanProvider";
 import { createCoordinates, createRotationAngles } from "../src/types";
+import { GeoProjection } from "d3-geo";
 
 // Helper component to consume context
 const MapConsumer = () => {
@@ -43,8 +44,7 @@ describe("MapProvider", () => {
             scale: 200,
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let projection: any;
+        let projection: () => GeoProjection;
 
         render(() => (
             <MapProvider projectionConfig={config} projection="geoMercator">
@@ -56,7 +56,7 @@ describe("MapProvider", () => {
             </MapProvider>
         ));
 
-        const proj = projection();
+        const proj = projection!();
         expect(proj.center()).toEqual([10, 10]);
         expect(proj.scale()).toBe(200);
         // Rotation is harder to check directly on d3 projection object output sometimes, but if it didn't throw it's good.
@@ -64,10 +64,8 @@ describe("MapProvider", () => {
 
     it("supports function projection", () => {
         const mockProjection = () => "custom-projection";
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const projAny = mockProjection as any;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let projection: any;
+        const projAny = mockProjection as unknown as GeoProjection;
+        let projection: () => GeoProjection;
 
         render(() => (
             <MapProvider projection={projAny}>
@@ -79,8 +77,7 @@ describe("MapProvider", () => {
             </MapProvider>
         ));
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        expect((projection() as any)()).toBe("custom-projection");
+        expect((projection!() as unknown as () => string)()).toBe("custom-projection");
     });
 
     it("throws error for unknown projection sting", () => {

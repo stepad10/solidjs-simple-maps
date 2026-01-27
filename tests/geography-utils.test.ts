@@ -20,8 +20,7 @@ function createFeature<G extends Geometry>(geometry: G): Feature<G> {
 describe("Geography Utils", () => {
     describe("getGeographyCoordinates", () => {
         it("returns null for missing geometry", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect(getGeographyCoordinates({ type: "Feature", properties: {}, geometry: null } as any)).toBeNull();
+            expect(getGeographyCoordinates({ type: "Feature", properties: {}, geometry: null } as unknown as Feature<Geometry>)).toBeNull();
         });
 
         it("handles Point", () => {
@@ -101,8 +100,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for unknown geometry", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const feat = createFeature({ type: "Unknown" } as any);
+            const feat = createFeature({ type: "Unknown" } as unknown as Geometry);
             expect(getGeographyCoordinates(feat)).toBeNull();
         });
 
@@ -112,8 +110,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for malformed Point", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const feat = createFeature<Point>({ type: "Point", coordinates: [] as any });
+            const feat = createFeature<Point>({ type: "Point", coordinates: [] as unknown as [number, number] });
             expect(getGeographyCoordinates(feat)).toBeNull();
         });
     });
@@ -134,8 +131,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for null geometry", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect(getGeographyCentroid({ start: null } as any)).toBeNull();
+            expect(getGeographyCentroid({ start: null } as unknown as Feature<Geometry>)).toBeNull();
         });
     });
 
@@ -157,8 +153,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for bad geometry", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect(getGeographyBounds({ geometry: null } as any)).toBeNull();
+            expect(getGeographyBounds({ geometry: null } as unknown as Feature<Geometry>)).toBeNull();
         });
     });
 

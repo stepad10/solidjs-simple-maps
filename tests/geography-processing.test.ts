@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { isString, getFeatures, getMesh, prepareMesh, prepareFeatures, createConnectorPath } from "../src/utils/geography-processing";
-import { FeatureCollection, Feature, Point } from "geojson";
+import { GeoPath } from "d3-geo";
+import { FeatureCollection, Feature, Point, LineString } from "geojson";
 import { Topology } from "topojson-specification";
 
 // Mocks
@@ -91,25 +92,23 @@ describe("Geography Processing", () => {
 
     describe("prepareMesh", () => {
         it("generates path strings", () => {
-            const mockPath = vi.fn().mockReturnValue("M0,0L10,10");
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const mockPath = vi.fn().mockReturnValue("M0,0L10,10") as unknown as GeoPath;
+
             const mesh = {
                 type: "LineString",
                 coordinates: [
                     [0, 0],
                     [10, 10],
                 ],
-            } as any;
+            } as LineString;
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result = prepareMesh(mesh, mesh, mockPath as any);
+            const result = prepareMesh(mesh, mesh, mockPath);
             expect(result.outline).toBe("M0,0L10,10");
             expect(result.borders).toBe("M0,0L10,10");
         });
 
         it("handles missing/null mesh", () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            expect(prepareMesh(null, null, vi.fn() as any)).toEqual({});
+            expect(prepareMesh(null, null, vi.fn() as unknown as GeoPath)).toEqual({});
         });
     });
 
