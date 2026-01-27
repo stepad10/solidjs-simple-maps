@@ -16,7 +16,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/stepad10/solidjs-simple-maps.git"
+        "url": "git+https://github.com/stepad10/solidjs-simple-maps.git"
     },
     "sideEffects": false,
     "files": [
