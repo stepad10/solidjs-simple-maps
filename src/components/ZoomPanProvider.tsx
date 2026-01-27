@@ -1,4 +1,5 @@
-import { createContext, useContext, JSX, mergeProps } from "solid-js";
+import { createContext, useContext, JSX, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { ZoomPanContextType } from "../types";
 
 export const ZoomPanContext = createContext<ZoomPanContextType | undefined>(undefined);
@@ -16,8 +17,12 @@ interface ZoomPanProviderProps {
 }
 
 export const ZoomPanProvider = (props: ZoomPanProviderProps) => {
-    const merged = mergeProps({ value: defaultValue }, props);
-    return <ZoomPanContext.Provider value={merged.value}>{props.children}</ZoomPanContext.Provider>;
+    const [local] = splitProps(props, ["value", "children"]);
+    return (
+        <Dynamic component={ZoomPanContext.Provider} value={local.value || defaultValue}>
+            {local.children}
+        </Dynamic>
+    );
 };
 
 export const useZoomPanContext = (): ZoomPanContextType => {

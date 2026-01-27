@@ -206,7 +206,7 @@ export interface GeographyProps extends Omit<
     onMouseUp?: (event: MouseEvent & { currentTarget: SVGPathElement; target: Element }, data?: GeographyEventData) => void;
     onFocus?: (event: FocusEvent & { currentTarget: SVGPathElement; target: Element }, data?: GeographyEventData) => void;
     onBlur?: (event: FocusEvent & { currentTarget: SVGPathElement; target: Element }, data?: GeographyEventData) => void;
-    style?: ConditionalStyle<JSX.CSSProperties>;
+    styleOptions?: ConditionalStyle<JSX.CSSProperties>;
     className?: string;
     class?: string;
 }

@@ -22,8 +22,7 @@ const App = () => {
                                         fill="#D6D6DA"
                                         stroke="#FFFFFF"
                                         stroke-width={0.5}
-                                        // eslint-disable-next-line solid/style-prop
-                                        style={{
+                                        styleOptions={{
                                             hover: { fill: "#F53" },
                                             pressed: { fill: "#E42" },
                                         }}

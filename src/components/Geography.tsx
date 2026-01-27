@@ -6,7 +6,7 @@ import { getGeographyCentroid, getGeographyBounds, getBestGeographyCoordinates }
 export default function Geography(props: GeographyProps) {
     const merged = mergeProps(
         {
-            style: {},
+            styleOptions: {},
             className: "",
             class: "",
         },
@@ -22,7 +22,7 @@ export default function Geography(props: GeographyProps) {
         "onMouseUp",
         "onFocus",
         "onBlur",
-        "style",
+        "styleOptions",
         "className",
         "class",
         "fill",
@@ -54,7 +54,7 @@ export default function Geography(props: GeographyProps) {
     });
 
     const currentStyle = createMemo(() => {
-        const style = local.style as Record<string, unknown>;
+        const style = local.styleOptions as Record<string, unknown>;
         return (style?.[currentState()] as Record<string, string | number>) || {};
     });
 
@@ -65,9 +65,9 @@ export default function Geography(props: GeographyProps) {
             fill={(currentStyle().fill as string) || local.fill}
             stroke={(currentStyle().stroke as string) || local.stroke}
             stroke-width={currentStyle().strokeWidth || local["stroke-width"]}
-            cursor={(local.style as Record<string, unknown>)?.default ? "pointer" : "default"}
+            cursor={(local.styleOptions as Record<string, unknown>)?.default ? "pointer" : "default"}
             class={`rsm-geography ${local.class} ${local.className}`.trim()}
-            style={local.style ? {} : {}}
+            style={{}}
             onClick={(evt) => {
                 if (local.onClick) local.onClick(evt, getEventData());
             }}
