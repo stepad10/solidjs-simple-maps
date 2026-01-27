@@ -30,6 +30,7 @@ const mockTopology: Topology = {
         default: {
             type: "GeometryCollection",
             geometries: [{ type: "Point", coordinates: [0, 0] }]
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any
     },
     arcs: [],
@@ -40,7 +41,8 @@ describe("Geography Processing", () => {
     describe("isString", () => {
         it("identifies strings", () => {
             expect(isString("/path/to/geo.json")).toBe(true);
-            expect(isString({})).toBe(false);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect(isString({} as any)).toBe(false);
         });
     });
 
@@ -64,6 +66,7 @@ describe("Geography Processing", () => {
         });
 
         it("returns empty array for unknown type", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(getFeatures({ type: "Unknown" } as any)).toEqual([]);
         });
 
@@ -96,14 +99,17 @@ describe("Geography Processing", () => {
     describe("prepareMesh", () => {
         it("generates path strings", () => {
             const mockPath = vi.fn().mockReturnValue("M0,0L10,10");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const mesh = { type: "LineString", coordinates: [[0, 0], [10, 10]] } as any;
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const result = prepareMesh(mesh, mesh, mockPath as any);
             expect(result.outline).toBe("M0,0L10,10");
             expect(result.borders).toBe("M0,0L10,10");
         });
 
         it("handles missing/null mesh", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(prepareMesh(null, null, vi.fn() as any)).toEqual({});
         });
     });
@@ -113,6 +119,7 @@ describe("Geography Processing", () => {
             const mockPath = vi.fn().mockReturnValue("M0,0");
             const features = [mockFeature];
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const result = prepareFeatures(features, mockPath as any);
             expect(result).toHaveLength(1);
             expect(result[0].svgPath).toBe("M0,0");
@@ -121,12 +128,15 @@ describe("Geography Processing", () => {
         it("filters out features with null path", () => {
             const mockPath = vi.fn().mockReturnValue(null);
             const features = [mockFeature];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const result = prepareFeatures(features, mockPath as any);
             expect(result).toHaveLength(0);
         });
 
         it("handles empty input", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(prepareFeatures([], vi.fn() as any)).toEqual([]);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(prepareFeatures(undefined, vi.fn() as any)).toEqual([]);
         });
     });

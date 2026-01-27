@@ -10,7 +10,8 @@ import {
     createGraticuleStep,
     createZoomConfig,
     createPanConfig,
-    createZoomPanConfig
+    createZoomPanConfig,
+    Coordinates
 } from "../src/types";
 
 describe("Type Helpers", () => {
@@ -51,7 +52,7 @@ describe("Type Helpers", () => {
             enableZoom: true,
         });
 
-        const bounds = [createCoordinates(0, 0), createCoordinates(100, 100)] as [any, any];
+        const bounds = [createCoordinates(0, 0), createCoordinates(100, 100)] as [Coordinates, Coordinates];
         const panConfig = createPanConfig(bounds);
         expect(panConfig).toEqual({
             translateExtent: bounds,

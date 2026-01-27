@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
-import { createSignal, ErrorBoundary } from "solid-js";
 import { MapProvider, useMapContext } from "../src/components/MapProvider";
 import { ZoomPanProvider, useZoomPanContext } from "../src/components/ZoomPanProvider";
 import { createCoordinates, createRotationAngles } from "../src/types";
@@ -44,6 +43,7 @@ describe("MapProvider", () => {
             scale: 200
         };
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let projection: any;
 
         render(() => (
@@ -64,10 +64,13 @@ describe("MapProvider", () => {
 
     it("supports function projection", () => {
         const mockProjection = () => "custom-projection";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const projAny = mockProjection as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let projection: any;
 
         render(() => (
-            <MapProvider projection={mockProjection as any}>
+            <MapProvider projection={projAny}>
                 {(() => {
                     const ctx = useMapContext();
                     projection = ctx.projection;
@@ -76,6 +79,7 @@ describe("MapProvider", () => {
             </MapProvider>
         ));
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expect((projection() as any)()).toBe("custom-projection");
     });
 

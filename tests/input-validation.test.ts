@@ -15,7 +15,7 @@ import {
     validateEventHandler,
     validateComponentProps
 } from "../src/utils/input-validation";
-import { createCoordinates, createRotationAngles, createParallels } from "../src/types";
+import { createRotationAngles, createParallels } from "../src/types";
 
 describe("Input Validation Utils", () => {
     afterEach(() => {
@@ -128,6 +128,7 @@ describe("Input Validation Utils", () => {
             };
             const result = validateProjectionConfig(input);
             expect(result.scale).toBe(100);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect((result as any).unknownProp).toBeUndefined();
         });
 
@@ -140,6 +141,11 @@ describe("Input Validation Utils", () => {
         it("rejects invalid rotation", () => {
             const input = { rotate: [0, "bad", 0] };
             expect(() => validateProjectionConfig(input)).toThrow("Expected number");
+        });
+
+        it("rejects invalid input type", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect(() => validateProjectionConfig("invalid" as any)).toThrow("Expected object");
         });
     });
 
@@ -175,6 +181,7 @@ describe("Input Validation Utils", () => {
         });
 
         it("uses item validator", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const validator = (item: any) => validateNumber(item);
             expect(validateArray([1, 2], validator)).toEqual([1, 2]);
             expect(() => validateArray([1, "bad"], validator)).toThrow("Invalid array item at index 1");
@@ -219,9 +226,10 @@ describe("Input Validation Utils", () => {
             const input = "<script>alert(1)</script>";
             expect(sanitizeSVG(input)).toBe(input);
         });
-    });
-
-    describe("validateStyleObject", () => {
+        it("returns empty string for invalid input", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect(sanitizeSVG({} as any)).toBe("");
+        });
         it("allows safe style properties", () => {
             const style = { fill: "red", strokeWidth: 2, fontSize: "12px" };
             expect(validateStyleObject(style)).toEqual(style);
@@ -239,7 +247,7 @@ describe("Input Validation Utils", () => {
 
     describe("validateEventHandler", () => {
         it("allows safe functions", () => {
-            const handler = () => console.log("click");
+            const handler = () => { };
             expect(validateEventHandler(handler)).toBe(handler);
         });
 

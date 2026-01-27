@@ -20,6 +20,7 @@ function createFeature<G extends Geometry>(geometry: G): Feature<G> {
 describe("Geography Utils", () => {
     describe("getGeographyCoordinates", () => {
         it("returns null for missing geometry", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(getGeographyCoordinates({ type: "Feature", properties: {}, geometry: null } as any)).toBeNull();
         });
 
@@ -60,6 +61,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for unknown geometry", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const feat = createFeature({ type: "Unknown" } as any);
             expect(getGeographyCoordinates(feat)).toBeNull();
         });
@@ -70,6 +72,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for malformed Point", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const feat = createFeature<Point>({ type: "Point", coordinates: [] as any });
             expect(getGeographyCoordinates(feat)).toBeNull();
         });
@@ -91,6 +94,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for null geometry", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(getGeographyCentroid({ start: null } as any)).toBeNull();
         });
     });
@@ -104,6 +108,7 @@ describe("Geography Utils", () => {
         });
 
         it("returns null for bad geometry", () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect(getGeographyBounds({ geometry: null } as any)).toBeNull();
         });
     });

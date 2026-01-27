@@ -121,9 +121,11 @@ describe("Geographies and Geography", () => {
     });
 
     it("renders geographies supplied as object data", async () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const geoData = mockTopoJSON as any;
         render(() => (
             <ComposableMap>
-                <Geographies geography={mockTopoJSON as any}>
+                <Geographies geography={geoData}>
                     {({ geographies }) => geographies.map((geo) => <Geography geography={geo} data-testid="object-geo-path" />)}
                 </Geographies>
             </ComposableMap>

@@ -54,6 +54,7 @@ describe("MapWithMetadata", () => {
             <MetaProvider>
                 <MapWithMetadata
                     enableSEO={false}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     metadata={{ title: "Hidden" } as any}
                 >
                     <ComposableMap />
@@ -71,6 +72,7 @@ describe("MapWithMetadata", () => {
             <MetaProvider>
                 <MapWithMetadata
                     preset="worldMap"
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     metadata={{} as any}
                 >
                     <ComposableMap />
@@ -89,6 +91,7 @@ describe("MapWithMetadata", () => {
             <MetaProvider>
                 <MapWithMetadata
                     preset="worldMap"
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     metadata={{ title: "Custom Title" } as any}
                 >
                     <ComposableMap />
@@ -109,6 +112,7 @@ describe("MapWithMetadata", () => {
                 <MapWithMetadata
                     enableOpenGraph={false}
                     enableTwitterCards={false}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     metadata={{ title: "Social Map" } as any}
                 >
                     <ComposableMap />
