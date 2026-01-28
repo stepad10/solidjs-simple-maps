@@ -8,14 +8,13 @@ export default function Sphere(props: SphereProps) {
             id: "rsm-sphere",
             fill: "transparent",
             stroke: "currentcolor",
-            strokeWidth: 0.5,
-            className: "",
+            "stroke-width": 0.5,
             class: "",
         },
         props,
     );
 
-    const [local, rest] = splitProps(merged, ["id", "fill", "stroke", "strokeWidth", "className", "class"]);
+    const [local, rest] = splitProps(merged, ["id", "fill", "stroke", "class"]);
 
     const { path } = useMapContext();
     const spherePath = createMemo(() => path()({ type: "Sphere" }) || "");
@@ -31,9 +30,8 @@ export default function Sphere(props: SphereProps) {
                 d={spherePath()}
                 fill={local.fill}
                 stroke={local.stroke}
-                stroke-width={local.strokeWidth}
                 style={{ "pointer-events": "none" }}
-                class={`rsm-sphere ${local.class} ${local.className}`.trim()}
+                class={`rsm-sphere ${local.class}`.trim()}
                 {...rest}
             />
         </>

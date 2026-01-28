@@ -6,23 +6,13 @@ import useGeographies from "../hooks/useGeographies";
 export default function Geographies(props: GeographiesProps<boolean>) {
     const merged = mergeProps(
         {
-            className: "",
             class: "",
             errorBoundary: false,
         },
         props,
     );
 
-    const [local, rest] = splitProps(merged, [
-        "geography",
-        "children",
-        "parseGeographies",
-        "className",
-        "class",
-        "errorBoundary",
-        "onGeographyError",
-        "fallback",
-    ]);
+    const [local, rest] = splitProps(merged, ["geography", "children", "parseGeographies", "class", "errorBoundary", "onGeographyError", "fallback"]);
 
     const mapContext = useMapContext();
 
@@ -43,7 +33,7 @@ export default function Geographies(props: GeographiesProps<boolean>) {
     });
 
     return (
-        <g class={`rsm-geographies ${local.class || ""} ${local.className || ""}`.trim()} {...rest}>
+        <g class={`rsm-geographies ${local.class}`.trim()} {...rest}>
             <Show
                 when={!geoData.loading()}
                 fallback={

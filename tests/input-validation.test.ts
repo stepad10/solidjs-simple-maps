@@ -227,7 +227,7 @@ describe("Input Validation Utils", () => {
             expect(sanitizeSVG({} as unknown as string)).toBe("");
         });
         it("allows safe style properties", () => {
-            const style = { fill: "red", strokeWidth: 2, fontSize: "12px" };
+            const style = { fill: "red", "stroke-width": 2, fontSize: "12px" };
             expect(validateStyleObject(style)).toEqual(style);
         });
 
@@ -260,15 +260,15 @@ describe("Input Validation Utils", () => {
     describe("validateComponentProps", () => {
         it("filters props", () => {
             const props = {
-                className: "test-class",
+                class: "test-class",
                 style: { fill: "red" },
                 onClick: () => {},
                 unknown: "value",
             };
-            const allowed = ["className", "style", "onClick"];
+            const allowed = ["class", "style", "onClick"];
 
             const result = validateComponentProps(props, allowed);
-            expect(result.className).toBe("test-class");
+            expect(result.class).toBe("test-class");
             expect(result.style).toEqual({ fill: "red" });
             expect(result.onClick).toBeDefined();
             expect(result.unknown).toBeUndefined();

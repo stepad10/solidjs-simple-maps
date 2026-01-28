@@ -315,13 +315,13 @@ export function validateStyleObject(input: unknown): Record<string, string | num
     const allowedProperties = [
         "fill",
         "stroke",
-        "strokeWidth",
-        "strokeDasharray",
-        "strokeLinecap",
-        "strokeLinejoin",
+        "stroke-width",
+        "stroke-dasharray",
+        "stroke-linecap",
+        "stroke-linejoin",
         "opacity",
-        "fillOpacity",
-        "strokeOpacity",
+        "fill-opacity",
+        "stroke-opacity",
         "transform",
         "cursor",
         "pointerEvents",
@@ -394,7 +394,8 @@ export function validateComponentProps(props: unknown, allowedProps: readonly st
             continue;
         }
 
-        if (sanitizedKey === "className") {
+        // Renamed function but kept logic. Maps 'class' prop to validation logic.
+        if (sanitizedKey === "class") {
             validatedProps[sanitizedKey] = validateClassName(value);
         } else if (sanitizedKey === "style") {
             validatedProps[sanitizedKey] = validateStyleObject(value);
