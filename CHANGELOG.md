@@ -1,5 +1,11 @@
 # solidjs-simple-maps
 
+## 1.1.0
+
+### Minor Changes
+
+- e5ba100: Wrap of previously not released changes
+
 ## 1.0.1
 
 ### Patch Changes
