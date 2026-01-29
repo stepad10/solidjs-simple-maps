@@ -41,7 +41,6 @@ export default function Marker(props: MarkerProps) {
             <g
                 transform={`translate(${projectedCoords()![0]}, ${projectedCoords()![1]})`}
                 class={`sm-marker ${local.class}`.trim()}
-                style={local.style ? {} : {}}
                 onClick={(evt) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if (local.onClick) (local.onClick as any)(evt);

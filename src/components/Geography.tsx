@@ -65,7 +65,6 @@ export default function Geography(props: GeographyProps) {
             stroke-width={(currentStyle()["stroke-width"] as string | number) || local["stroke-width"]}
             cursor={(local.styleOptions as Record<string, unknown>)?.default ? "pointer" : "default"}
             class={`sm-geography ${local.class}`.trim()}
-            style={{}}
             onClick={(evt) => {
                 if (local.onClick) local.onClick(evt, getEventData());
             }}

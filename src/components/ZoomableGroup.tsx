@@ -40,23 +40,17 @@ export default function ZoomableGroup(props: ZoomableGroupPropsUnion) {
     const mapContext = useMapContext();
 
     // Normalize props
-    const config = createMemo(() => {
-        const finalMinZoom = local.minZoom;
-        const finalMaxZoom = local.maxZoom;
-        let finalTranslateExtent = local.translateExtent;
+    const scaleExtent = createMemo(() => {
+        return createScaleExtent(local.minZoom, local.maxZoom);
+    });
 
+    const translateExtent = createMemo(() => {
+        if (local.translateExtent) return local.translateExtent;
         // Logic from original: if simple props, handle translateExtent logic
-        if (isSimpleProps(props)) {
-            if (!finalTranslateExtent && local.enablePan !== false) {
-                finalTranslateExtent = createTranslateExtent(createCoordinates(-Infinity, -Infinity), createCoordinates(Infinity, Infinity));
-            }
+        if (isSimpleProps(props) && local.enablePan !== false) {
+            return createTranslateExtent(createCoordinates(-Infinity, -Infinity), createCoordinates(Infinity, Infinity));
         }
-
-        return {
-            minZoom: finalMinZoom,
-            maxZoom: finalMaxZoom,
-            translateExtent: finalTranslateExtent,
-        };
+        return undefined;
     });
 
     const { setMapRef, position, transformString } = useZoomPan({
@@ -79,10 +73,10 @@ export default function ZoomableGroup(props: ZoomableGroupPropsUnion) {
             return local.onMoveEnd;
         },
         get scaleExtent() {
-            return createScaleExtent(config().minZoom, config().maxZoom);
+            return scaleExtent();
         },
         get translateExtent() {
-            return config().translateExtent;
+            return translateExtent();
         },
     });
 

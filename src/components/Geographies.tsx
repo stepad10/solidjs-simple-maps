@@ -42,21 +42,17 @@ export default function Geographies(props: GeographiesProps<boolean>) {
                     </text>
                 }
             >
-                {
-                    (() => {
-                        const geographyData = geoData.geographies(); // Assuming geographyData is meant to be geoData.geographies()
-                        if (!geographyData || geographyData.length === 0) return null;
-                        if (!mapContext) return null;
-
-                        return local.children({
-                            geographies: geographyData, // Use the extracted geographyData
-                            outline: geoData.outline() || "", // Keep as signal access
-                            borders: geoData.borders() || "", // Keep as signal access
-                            path: mapContext.path(),
-                            projection: mapContext.projection(),
-                        }) as JSX.Element;
-                    }) as unknown as JSX.Element
-                }
+                <Show when={geoData.geographies()?.length > 0 && mapContext}>
+                    {
+                        local.children({
+                            geographies: geoData.geographies()!,
+                            outline: geoData.outline() || "",
+                            borders: geoData.borders() || "",
+                            path: mapContext!.path(),
+                            projection: mapContext!.projection(),
+                        }) as JSX.Element
+                    }
+                </Show>
             </Show>
         </g>
     );
