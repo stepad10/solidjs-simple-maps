@@ -1,5 +1,11 @@
 # solidjs-simple-maps
 
+## 1.3.1
+
+### Patch Changes
+
+- aff2b67: \
+
 ## 1.3.0
 
 ### Minor Changes
