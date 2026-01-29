@@ -9,13 +9,12 @@ export default function Graticule(props: GraticuleProps) {
             fill: "transparent",
             stroke: "currentcolor",
             step: createGraticuleStep(10, 10),
-            className: "",
             class: "",
         },
         props,
     );
 
-    const [local, rest] = splitProps(merged, ["step", "className", "class", "fill", "stroke"]);
+    const [local, rest] = splitProps(merged, ["step", "class", "fill", "stroke"]);
 
     const { path } = useMapContext();
 
@@ -24,5 +23,5 @@ export default function Graticule(props: GraticuleProps) {
         return path()(graticule) || "";
     });
 
-    return <path d={d()} fill={local.fill} stroke={local.stroke} class={`rsm-graticule ${local.class} ${local.className}`.trim()} {...rest} />;
+    return <path d={d()} fill={local.fill} stroke={local.stroke} class={`sm-graticule ${local.class}`.trim()} {...rest} />;
 }

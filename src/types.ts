@@ -1,4 +1,4 @@
-import { JSX } from "solid-js";
+import { ComponentProps, JSX } from "solid-js";
 import { GeoPath, GeoProjection } from "d3-geo";
 import { Feature, FeatureCollection, Geometry } from "geojson";
 import { Topology } from "topojson-specification";
@@ -147,13 +147,15 @@ export interface ZoomPanContextType {
     transformString: string;
 }
 
-export interface ComposableMapProps<P extends string = string, M extends boolean = false> extends JSX.SvgSVGAttributes<SVGSVGElement> {
+// Ensure style options can handle native stroke-width
+export type NativeStyle = JSX.CSSProperties | { "stroke-width"?: string | number };
+
+export interface ComposableMapProps<P extends string = string, M extends boolean = false> extends ComponentProps<"svg"> {
     width?: number;
     height?: number;
     projection?: ProjectionName | P | GeoProjection;
     projectionConfig?: ProjectionConfigConditional<P>;
-    className?: string; // Solid uses class, but often className shim is supported. Sticking to className for props compatibility, mapped to class
-    class?: string;
+    // removed className
     children?: JSX.Element;
 
     onGeographyError?: (error: Error) => void;
@@ -178,13 +180,12 @@ export interface ComposableMapProps<P extends string = string, M extends boolean
           };
 }
 
-export type GeographiesProps<E extends boolean = false> = Omit<JSX.SvgSVGAttributes<SVGGElement>, "children" | "onError"> &
+export type GeographiesProps<E extends boolean = false> = Omit<ComponentProps<"g">, "children" | "onError"> &
     GeographyPropsWithErrorHandling<E> & {
         geography: string | Topology | FeatureCollection;
         children: (props: { geographies: Feature<Geometry>[]; outline: string; borders: string; path: GeoPath; projection: GeoProjection }) => JSX.Element;
         parseGeographies?: (geographies: Feature<Geometry>[]) => Feature<Geometry>[];
-        className?: string;
-        class?: string;
+        // removed className
     };
 
 export interface GeographyEventData {
@@ -195,7 +196,7 @@ export interface GeographyEventData {
 }
 
 export interface GeographyProps extends Omit<
-    JSX.SvgSVGAttributes<SVGPathElement>,
+    ComponentProps<"path">,
     "style" | "onClick" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onBlur"
 > {
     geography: Feature<Geometry>;
@@ -206,12 +207,11 @@ export interface GeographyProps extends Omit<
     onMouseUp?: (event: MouseEvent & { currentTarget: SVGPathElement; target: Element }, data?: GeographyEventData) => void;
     onFocus?: (event: FocusEvent & { currentTarget: SVGPathElement; target: Element }, data?: GeographyEventData) => void;
     onBlur?: (event: FocusEvent & { currentTarget: SVGPathElement; target: Element }, data?: GeographyEventData) => void;
-    styleOptions?: ConditionalStyle<JSX.CSSProperties>;
-    className?: string;
-    class?: string;
+    styleOptions?: ConditionalStyle<NativeStyle>;
+    // removed className
 }
 
-export type ZoomableGroupProps<Z extends boolean = true, P extends boolean = true> = JSX.SvgSVGAttributes<SVGGElement> &
+export type ZoomableGroupProps<Z extends boolean = true, P extends boolean = true> = ComponentProps<"g"> &
     ZoomBehaviorProps<Z> &
     PanBehaviorProps<P> & {
         center?: Coordinates;
@@ -220,12 +220,11 @@ export type ZoomableGroupProps<Z extends boolean = true, P extends boolean = tru
         onMoveStart?: (position: Position, event: Event) => void;
         onMove?: (position: Position, event: Event) => void;
         onMoveEnd?: (position: Position, event: Event) => void;
-        className?: string;
-        class?: string;
+        // removed className
         children?: JSX.Element;
     };
 
-export interface SimpleZoomableGroupProps extends JSX.SvgSVGAttributes<SVGGElement> {
+export interface SimpleZoomableGroupProps extends ComponentProps<"g"> {
     center?: Coordinates;
     zoom?: number;
     minZoom?: number;
@@ -238,8 +237,7 @@ export interface SimpleZoomableGroupProps extends JSX.SvgSVGAttributes<SVGGEleme
     onMoveStart?: (position: Position, event: Event) => void;
     onMove?: (position: Position, event: Event) => void;
     onMoveEnd?: (position: Position, event: Event) => void;
-    className?: string;
-    class?: string;
+    // removed className
     children?: JSX.Element;
 }
 
@@ -250,43 +248,50 @@ export type ZoomableGroupPropsUnion =
     | ZoomableGroupProps<false, false>
     | SimpleZoomableGroupProps;
 
-export interface MarkerProps extends Omit<JSX.SvgSVGAttributes<SVGGElement>, "style"> {
+export interface MarkerProps extends Omit<
+    ComponentProps<"g">,
+    "style" | "onClick" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onBlur"
+> {
     coordinates: Coordinates;
-    style?: ConditionalStyle<JSX.CSSProperties>;
-    className?: string;
-    class?: string;
+    style?: ConditionalStyle<NativeStyle>;
+    // removed className
     children?: JSX.Element;
+    onClick?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseEnter?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseLeave?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseDown?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseUp?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onFocus?: (event: FocusEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onBlur?: (event: FocusEvent & { currentTarget: SVGGElement; target: Element }) => void;
 }
 
-export interface LineProps extends Omit<JSX.SvgSVGAttributes<SVGPathElement>, "from" | "to"> {
+export interface LineProps extends Omit<ComponentProps<"path">, "from" | "to"> {
     from: Coordinates;
     to: Coordinates;
     coordinates?: Coordinates[];
-    className?: string;
-    class?: string;
+    // removed className
+    // removed strokeWidth - use native spread
 }
 
-export interface AnnotationProps extends JSX.SvgSVGAttributes<SVGGElement> {
+export interface AnnotationProps extends ComponentProps<"g"> {
     subject: Coordinates;
     dx?: number;
     dy?: number;
     curve?: number;
-    connectorProps?: JSX.SvgSVGAttributes<SVGPathElement>;
-    className?: string;
-    class?: string;
+    connectorProps?: ComponentProps<"path">;
+    // removed className
     children?: JSX.Element;
 }
 
-export interface GraticuleProps extends JSX.SvgSVGAttributes<SVGPathElement> {
+export interface GraticuleProps extends ComponentProps<"path"> {
     step?: GraticuleStep;
-    className?: string;
-    class?: string;
+    // removed className
 }
 
-export interface SphereProps extends JSX.SvgSVGAttributes<SVGPathElement> {
+export interface SphereProps extends ComponentProps<"path"> {
     id?: string;
-    className?: string;
-    class?: string;
+    // removed className
+    // removed strokeWidth - use native spread
 }
 
 export interface UseGeographiesProps {

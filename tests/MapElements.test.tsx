@@ -13,7 +13,7 @@ describe("Map Elements", () => {
             </ComposableMap>
         ));
 
-        const markerGroup = container.querySelector(".rsm-marker");
+        const markerGroup = container.querySelector(".sm-marker");
         expect(markerGroup).toBeInTheDocument();
 
         // London [0, 51.5] should project to roughly [400, 300] (center) if center is [0,0]
@@ -44,7 +44,7 @@ describe("Map Elements", () => {
             </ComposableMap>
         ));
 
-        const annotationGroup = container.querySelector(".rsm-annotation");
+        const annotationGroup = container.querySelector(".sm-annotation");
         expect(annotationGroup).toBeInTheDocument();
         // Annotation has a connector path inside
         const connector = annotationGroup?.querySelector("path");

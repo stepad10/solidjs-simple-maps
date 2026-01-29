@@ -46,7 +46,7 @@ describe("MapWithMetadata", () => {
         await waitFor(() => {
             expect(document.title).toBe("Map Wrapper");
             expect(document.querySelector('meta[name="description"]')).toHaveAttribute("content", "Wrapper description");
-            expect(container.querySelector(".rsm-svg")).toBeInTheDocument();
+            expect(container.querySelector(".sm-svg")).toBeInTheDocument();
         });
     });
     it("respects enableSEO prop", async () => {

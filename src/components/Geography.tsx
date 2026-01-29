@@ -7,7 +7,6 @@ export default function Geography(props: GeographyProps) {
     const merged = mergeProps(
         {
             styleOptions: {},
-            className: "",
             class: "",
         },
         props,
@@ -23,7 +22,6 @@ export default function Geography(props: GeographyProps) {
         "onFocus",
         "onBlur",
         "styleOptions",
-        "className",
         "class",
         "fill",
         "stroke",
@@ -64,10 +62,9 @@ export default function Geography(props: GeographyProps) {
             d={(svgPath() as string) || ""}
             fill={(currentStyle().fill as string) || local.fill}
             stroke={(currentStyle().stroke as string) || local.stroke}
-            stroke-width={currentStyle().strokeWidth || local["stroke-width"]}
+            stroke-width={(currentStyle()["stroke-width"] as string | number) || local["stroke-width"]}
             cursor={(local.styleOptions as Record<string, unknown>)?.default ? "pointer" : "default"}
-            class={`rsm-geography ${local.class} ${local.className}`.trim()}
-            style={{}}
+            class={`sm-geography ${local.class}`.trim()}
             onClick={(evt) => {
                 if (local.onClick) local.onClick(evt, getEventData());
             }}

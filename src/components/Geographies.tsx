@@ -6,23 +6,13 @@ import useGeographies from "../hooks/useGeographies";
 export default function Geographies(props: GeographiesProps<boolean>) {
     const merged = mergeProps(
         {
-            className: "",
             class: "",
             errorBoundary: false,
         },
         props,
     );
 
-    const [local, rest] = splitProps(merged, [
-        "geography",
-        "children",
-        "parseGeographies",
-        "className",
-        "class",
-        "errorBoundary",
-        "onGeographyError",
-        "fallback",
-    ]);
+    const [local, rest] = splitProps(merged, ["geography", "children", "parseGeographies", "class", "errorBoundary", "onGeographyError", "fallback"]);
 
     const mapContext = useMapContext();
 
@@ -43,7 +33,7 @@ export default function Geographies(props: GeographiesProps<boolean>) {
     });
 
     return (
-        <g class={`rsm-geographies ${local.class || ""} ${local.className || ""}`.trim()} {...rest}>
+        <g class={`sm-geographies ${local.class}`.trim()} {...rest}>
             <Show
                 when={!geoData.loading()}
                 fallback={
@@ -52,21 +42,17 @@ export default function Geographies(props: GeographiesProps<boolean>) {
                     </text>
                 }
             >
-                {
-                    (() => {
-                        const geographyData = geoData.geographies(); // Assuming geographyData is meant to be geoData.geographies()
-                        if (!geographyData || geographyData.length === 0) return null;
-                        if (!mapContext) return null;
-
-                        return local.children({
-                            geographies: geographyData, // Use the extracted geographyData
-                            outline: geoData.outline() || "", // Keep as signal access
-                            borders: geoData.borders() || "", // Keep as signal access
-                            path: mapContext.path(),
-                            projection: mapContext.projection(),
-                        }) as JSX.Element;
-                    }) as unknown as JSX.Element
-                }
+                <Show when={geoData.geographies()?.length > 0 && mapContext}>
+                    {
+                        local.children({
+                            geographies: geoData.geographies()!,
+                            outline: geoData.outline() || "",
+                            borders: geoData.borders() || "",
+                            path: mapContext!.path(),
+                            projection: mapContext!.projection(),
+                        }) as JSX.Element
+                    }
+                </Show>
             </Show>
         </g>
     );

@@ -47,8 +47,7 @@ export function sanitizeString(input: unknown, allowHTML: boolean = false): stri
             .replace(/vbscript:/gi, "");
     }
 
-    // eslint-disable-next-line no-control-regex
-    sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
+    sanitized = sanitized.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
 
     return sanitized;
 }
@@ -315,13 +314,13 @@ export function validateStyleObject(input: unknown): Record<string, string | num
     const allowedProperties = [
         "fill",
         "stroke",
-        "strokeWidth",
-        "strokeDasharray",
-        "strokeLinecap",
-        "strokeLinejoin",
+        "stroke-width",
+        "stroke-dasharray",
+        "stroke-linecap",
+        "stroke-linejoin",
         "opacity",
-        "fillOpacity",
-        "strokeOpacity",
+        "fill-opacity",
+        "stroke-opacity",
         "transform",
         "cursor",
         "pointerEvents",
@@ -394,7 +393,8 @@ export function validateComponentProps(props: unknown, allowedProps: readonly st
             continue;
         }
 
-        if (sanitizedKey === "className") {
+        // Renamed function but kept logic. Maps 'class' prop to validation logic.
+        if (sanitizedKey === "class") {
             validatedProps[sanitizedKey] = validateClassName(value);
         } else if (sanitizedKey === "style") {
             validatedProps[sanitizedKey] = validateStyleObject(value);

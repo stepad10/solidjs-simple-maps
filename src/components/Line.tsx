@@ -8,15 +8,14 @@ export default function Line(props: LineProps) {
             from: [0, 0] as [Longitude, Latitude],
             to: [0, 0] as [Longitude, Latitude],
             stroke: "currentcolor",
-            strokeWidth: 3,
+            "stroke-width": 3,
             fill: "transparent",
-            className: "",
             class: "",
         },
         props,
     );
 
-    const [local, rest] = splitProps(merged, ["from", "to", "coordinates", "stroke", "strokeWidth", "fill", "className", "class"]);
+    const [local, rest] = splitProps(merged, ["from", "to", "coordinates", "stroke", "fill", "class"]);
 
     const { path } = useMapContext();
 
@@ -28,14 +27,5 @@ export default function Line(props: LineProps) {
         return path()(lineData) || "";
     });
 
-    return (
-        <path
-            d={d()}
-            class={`rsm-line ${local.class} ${local.className}`.trim()}
-            stroke={local.stroke}
-            stroke-width={local.strokeWidth}
-            fill={local.fill}
-            {...rest}
-        />
-    );
+    return <path d={d()} class={`sm-line ${local.class}`.trim()} stroke={local.stroke} fill={local.fill} {...rest} />;
 }

@@ -46,7 +46,7 @@ describe("ZoomableGroup", () => {
             </ComposableMap>
         ));
 
-        const group = container.querySelector(".rsm-zoomable-group");
+        const group = container.querySelector(".sm-zoomable-group");
         expect(group).toBeInTheDocument();
 
         // Check for the transparent event capture rect
@@ -126,7 +126,7 @@ describe("ZoomableGroup", () => {
             </ComposableMap>
         ));
 
-        const group = container.querySelector(".rsm-zoomable-group");
+        const group = container.querySelector(".sm-zoomable-group");
         expect(group).toBeInTheDocument();
 
         // Update signals

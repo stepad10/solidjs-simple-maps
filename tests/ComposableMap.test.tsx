@@ -10,9 +10,9 @@ describe("ComposableMap", () => {
             </ComposableMap>
         ));
 
-        const svg = container.querySelector("svg");
+        const svg = container.querySelector(".sm-svg");
         expect(svg).toBeInTheDocument();
-        expect(svg).toHaveClass("rsm-svg");
+        expect(svg).toHaveClass("sm-svg");
         expect(svg).toHaveAttribute("viewBox", "0 0 800 600");
     });
 
@@ -35,7 +35,7 @@ describe("ComposableMap", () => {
         ));
 
         const svg = container.querySelector("svg");
-        expect(svg).toHaveClass("rsm-svg");
+        expect(svg).toHaveClass("sm-svg");
         expect(svg).toHaveClass("custom-map");
     });
 });

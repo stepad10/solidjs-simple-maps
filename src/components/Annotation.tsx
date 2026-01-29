@@ -9,13 +9,12 @@ export default function Annotation(props: AnnotationProps) {
             dx: 30,
             dy: 30,
             curve: 0,
-            className: "",
             class: "",
         },
         props,
     );
 
-    const [local, rest] = splitProps(merged, ["subject", "children", "connectorProps", "dx", "dy", "curve", "className", "class"]);
+    const [local, rest] = splitProps(merged, ["subject", "children", "connectorProps", "dx", "dy", "curve", "class"]);
 
     const { projection } = useMapContext();
 
@@ -37,7 +36,7 @@ export default function Annotation(props: AnnotationProps) {
 
     return (
         <Show when={projectedCoords()}>
-            <g transform={transform()} class={`rsm-annotation ${local.class} ${local.className}`.trim()} {...rest}>
+            <g transform={transform()} class={`sm-annotation ${local.class}`.trim()} {...rest}>
                 <path d={connectorPath()} fill="transparent" stroke="#000" {...local.connectorProps} />
                 {local.children}
             </g>
