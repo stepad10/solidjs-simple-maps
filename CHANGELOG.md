@@ -1,5 +1,11 @@
 # solidjs-simple-maps
 
+## 1.1.1
+
+### Patch Changes
+
+- ca2c1b8: Fixed props naming convention from original React camelCase to html standard kebab-case + other minor SolidJS idiomatic improvements
+
 ## 1.1.0
 
 ### Minor Changes
