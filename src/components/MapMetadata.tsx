@@ -83,8 +83,7 @@ export function MapMetadata(props: MapMetadataProps) {
 
             {/* JSON-LD structured data */}
             <Show when={props.jsonLd}>
-                {/* eslint-disable-next-line solid/no-innerhtml */}
-                <script type="application/ld+json" innerHTML={JSON.stringify(props.jsonLd)} />
+                <script type="application/ld+json" textContent={JSON.stringify(props.jsonLd)} />
             </Show>
 
             {/* Map-specific metadata */}

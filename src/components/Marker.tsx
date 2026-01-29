@@ -42,40 +42,33 @@ export default function Marker(props: MarkerProps) {
                 transform={`translate(${projectedCoords()![0]}, ${projectedCoords()![1]})`}
                 class={`sm-marker ${local.class}`.trim()}
                 onClick={(evt) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onClick) (local.onClick as any)(evt);
+                    if (local.onClick) local.onClick(evt);
                 }}
                 onMouseEnter={(evt) => {
                     setHover(true);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onMouseEnter) (local.onMouseEnter as any)(evt);
+                    if (local.onMouseEnter) local.onMouseEnter(evt);
                 }}
                 onMouseLeave={(evt) => {
                     setHover(false);
                     setPressed(false);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onMouseLeave) (local.onMouseLeave as any)(evt);
+                    if (local.onMouseLeave) local.onMouseLeave(evt);
                 }}
                 onFocus={(evt) => {
                     setFocus(true);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onFocus) (local.onFocus as any)(evt);
+                    if (local.onFocus) local.onFocus(evt);
                 }}
                 onBlur={(evt) => {
                     setFocus(false);
                     setPressed(false);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onBlur) (local.onBlur as any)(evt);
+                    if (local.onBlur) local.onBlur(evt);
                 }}
                 onMouseDown={(evt) => {
                     setPressed(true);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onMouseDown) (local.onMouseDown as any)(evt);
+                    if (local.onMouseDown) local.onMouseDown(evt);
                 }}
                 onMouseUp={(evt) => {
                     setPressed(false);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (local.onMouseUp) (local.onMouseUp as any)(evt);
+                    if (local.onMouseUp) local.onMouseUp(evt);
                 }}
                 {...rest}
             >

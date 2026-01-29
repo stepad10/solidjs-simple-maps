@@ -248,11 +248,21 @@ export type ZoomableGroupPropsUnion =
     | ZoomableGroupProps<false, false>
     | SimpleZoomableGroupProps;
 
-export interface MarkerProps extends Omit<ComponentProps<"g">, "style"> {
+export interface MarkerProps extends Omit<
+    ComponentProps<"g">,
+    "style" | "onClick" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onBlur"
+> {
     coordinates: Coordinates;
     style?: ConditionalStyle<NativeStyle>;
     // removed className
     children?: JSX.Element;
+    onClick?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseEnter?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseLeave?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseDown?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onMouseUp?: (event: MouseEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onFocus?: (event: FocusEvent & { currentTarget: SVGGElement; target: Element }) => void;
+    onBlur?: (event: FocusEvent & { currentTarget: SVGGElement; target: Element }) => void;
 }
 
 export interface LineProps extends Omit<ComponentProps<"path">, "from" | "to"> {
