@@ -1,5 +1,11 @@
 # solidjs-simple-maps
 
+## 1.3.0
+
+### Minor Changes
+
+- ab360cf: trying to fix tags
+
 ## 1.2.0
 
 ### Minor Changes
