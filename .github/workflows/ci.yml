@@ -43,3 +43,16 @@ jobs:
 
             - name: Test
               run: pnpm run test
+
+    ci-success:
+        name: CI Success
+        needs: quality-check
+        runs-on: ubuntu-latest
+        if: always()
+        steps:
+            - run: |
+                  if [[ "${{ needs.quality-check.result }}" == "success" ]]; then
+                      exit 0
+                  else
+                      exit 1
+                  fi
