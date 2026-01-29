@@ -1,0 +1,5 @@
+---
+"solidjs-simple-maps": patch
+---
+
+\
