@@ -23,5 +23,5 @@ export default function Graticule(props: GraticuleProps) {
         return path()(graticule) || "";
     });
 
-    return <path d={d()} fill={local.fill} stroke={local.stroke} class={`rsm-graticule ${local.class}`.trim()} {...rest} />;
+    return <path d={d()} fill={local.fill} stroke={local.stroke} class={`sm-graticule ${local.class}`.trim()} {...rest} />;
 }

@@ -33,7 +33,7 @@ export default function Geographies(props: GeographiesProps<boolean>) {
     });
 
     return (
-        <g class={`rsm-geographies ${local.class}`.trim()} {...rest}>
+        <g class={`sm-geographies ${local.class}`.trim()} {...rest}>
             <Show
                 when={!geoData.loading()}
                 fallback={

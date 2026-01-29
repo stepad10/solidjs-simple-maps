@@ -5,7 +5,7 @@ import { useMapContext } from "./MapProvider";
 export default function Sphere(props: SphereProps) {
     const merged = mergeProps(
         {
-            id: "rsm-sphere",
+            id: "sm-sphere",
             fill: "transparent",
             stroke: "currentcolor",
             "stroke-width": 0.5,
@@ -31,7 +31,7 @@ export default function Sphere(props: SphereProps) {
                 fill={local.fill}
                 stroke={local.stroke}
                 style={{ "pointer-events": "none" }}
-                class={`rsm-sphere ${local.class}`.trim()}
+                class={`sm-sphere ${local.class}`.trim()}
                 {...rest}
             />
         </>

@@ -40,7 +40,7 @@ export default function Marker(props: MarkerProps) {
         <Show when={projectedCoords()}>
             <g
                 transform={`translate(${projectedCoords()![0]}, ${projectedCoords()![1]})`}
-                class={`rsm-marker ${local.class}`.trim()}
+                class={`sm-marker ${local.class}`.trim()}
                 style={local.style ? {} : {}}
                 onClick={(evt) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any

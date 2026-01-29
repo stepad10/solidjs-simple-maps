@@ -19,7 +19,7 @@ export default function ComposableMap(props: ComposableMapProps) {
 
     return (
         <MapProvider width={local.width} height={local.height} projection={local.projection} projectionConfig={local.projectionConfig}>
-            <svg viewBox={`0 0 ${local.width} ${local.height}`} class={`rsm-svg ${local.class}`.trim()} {...rest}>
+            <svg viewBox={`0 0 ${local.width} ${local.height}`} class={`sm-svg ${local.class}`.trim()} {...rest}>
                 {local.children}
             </svg>
         </MapProvider>

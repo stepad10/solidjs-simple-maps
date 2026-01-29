@@ -27,5 +27,5 @@ export default function Line(props: LineProps) {
         return path()(lineData) || "";
     });
 
-    return <path d={d()} class={`rsm-line ${local.class}`.trim()} stroke={local.stroke} fill={local.fill} {...rest} />;
+    return <path d={d()} class={`sm-line ${local.class}`.trim()} stroke={local.stroke} fill={local.fill} {...rest} />;
 }
